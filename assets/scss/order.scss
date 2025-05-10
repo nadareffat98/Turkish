@@ -1,0 +1,16 @@
+:deep(.p-inputtext) {
+    padding: 14px 16px;
+}
+:deep(.p-timeline-event-separator):has(.done-event) {
+    .p-timeline-event-connector {
+        background: $second-color !important;
+    }
+}
+:deep(.data-view-header) {
+    background: #f2f4f5;
+    border-top: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    color: $main-color;
+    font-size: 14px;
+    font-weight: 500;
+}

@@ -1,0 +1,16 @@
+// fonts
+$main-font: Montserrat;
+$global-font: 500 14px $main-font;
+//colors
+$main-color: #3d4435;
+$second-color: #921919;
+$border-color: #e4e7e9;
+$font-color: #5f6c72;
+
+// root variables
+:root {
+    --main-color: #3d4435;
+    --second-color: #921919;
+    --border-color: #e4e7e9;
+    --font-color: #5f6c72;
+}

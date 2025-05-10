@@ -1,0 +1,13 @@
+:deep(.data-view-header) {
+    background: #f2f4f5;
+    border-top: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    color: $main-color;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+:deep(.p-inputtext) {
+    border-width: 2px;
+    padding: 14px 16px;
+}
