@@ -1,16 +1,15 @@
 <script setup lang="ts">
 // 👉 Data
-const { $api }:any = useNuxtApp();
+const { $api }: any = useNuxtApp();
 const clientOpinionData: any = ref(null);
-onMounted(async () => {
-  if (import.meta.client) {
-    const data: any = await $api("client_opinions");
-    clientOpinionData.value = data.data;
-  }
-});
+const data: any = await $api("client_opinions");
+clientOpinionData.value = data.data;
 </script>
 <template>
-  <div class="body-content client-opinion-container mt-16" v-if="clientOpinionData">
+  <div
+    class="body-content client-opinion-container mt-16"
+    v-if="clientOpinionData"
+  >
     <div class="relative">
       <font-awesome
         icon="fa-solid fa-quote-left"

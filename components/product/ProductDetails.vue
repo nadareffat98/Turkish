@@ -1,5 +1,5 @@
 <script setup>
-import { set } from "@vueuse/core";
+import { get } from "@vueuse/core";
 
 // 👉 Props
 const props = defineProps(["product"]);
@@ -10,17 +10,10 @@ const authStore = useAuthStore();
 const guestToken = await getGuestToken();
 const isLoading = useLoadingState();
 const { $api, $toast } = useNuxtApp();
-const qty = ref(1);
-const selectedSize = ref("");
 const selectedColor = ref(
-  props.product.colors.length > 0 ? props.product.colors[0].name : null
+  props.product.colors.length > 0 ? props.product.colors[0] : null
 );
-const sizes = ref([
-  { name: "M" },
-  { name: "L" },
-  { name: "XL" },
-  { name: "XXL" },
-]);
+const qty = ref(1);
 // 👉 Methods
 const addToCart = async () => {
   isLoading.value = true;
@@ -29,7 +22,7 @@ const addToCart = async () => {
     body: {
       product_id: props.product.id,
       quantity: qty.value,
-      colored_id: selectedColor.value?.id ?? null,
+      color_id: selectedColor.value?.color.id ?? null,
     },
   });
   isLoading.value = false;
@@ -49,6 +42,41 @@ const addOrRemoveWishlist = async () => {
     isLoading.value = false;
   }, 1000);
 };
+const copyProductLink = async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href);
+    $toast("Copied successfully", "success");
+  } catch (err) {
+    console.error("Failed to copy: ", err);
+    $toast("Failed to copy link", "error");
+  }
+};
+const handleSubmit = () => {
+  if (isAvalaible.value) addToCart();
+  else addOrRemoveWishlist();
+};
+// 👉 Computed
+const numberOfRatings = computed(() => {
+  return (
+    props.product.five_stars +
+    props.product.four_stars +
+    props.product.three_stars +
+    props.product.two_stars +
+    props.product.one_star
+  );
+});
+const maxQty = computed(() => {
+  return Number(selectedColor.value?.quantity) || 0;
+});
+const isAvalaible = computed(() => {
+  return (Number(selectedColor.value?.quantity) || 0) > 0;
+});
+const getButtonContent = computed(() => {
+  return isAvalaible.value ? "Add to Cart" : "Notify Me";
+});
+const getButtonIcon = computed(() => {
+  return isAvalaible.value ? "pi pi-shopping-bag" : "pi pi-bell";
+});
 </script>
 <template>
   <div class="product-details flex gap-14 pb-20">
@@ -64,9 +92,11 @@ const addOrRemoveWishlist = async () => {
           pt:officon:style="color:#FBBC05"
         />
         <p class="text-sm font-semibold">{{ product.avg_rate }} Star Rating</p>
-        <!-- <span class="text-font-color text-sm font-normal"
-          >(21,671 User feedback)</span
-        > -->
+        <span
+          class="text-font-color text-sm font-normal"
+          v-if="numberOfRatings > 0"
+          >({{ numberOfRatings }} User feedback)</span
+        >
       </div>
       <p class="font-medium text-xl">
         {{ product.title }}
@@ -77,7 +107,13 @@ const addOrRemoveWishlist = async () => {
         </p>
         <p class="text-font-color text-sm font-normal">
           Availability:
-          <span class="text-green-600 font-semibold">In Stock</span>
+          <span
+            :class="[
+              'font-semibold',
+              isAvalaible ? 'text-[#2DB224]' : 'text-[#E53835]',
+            ]"
+            >{{ isAvalaible ? "In Stock" : "Out of Stock" }}</span
+          >
         </p>
         <p class="text-font-color text-sm font-normal">
           Brand:
@@ -85,7 +121,7 @@ const addOrRemoveWishlist = async () => {
             product.brand.title
           }}</span>
         </p>
-        <p class="text-font-color text-sm font-normal">
+        <p class="text-font-color text-sm font-normal" v-if="product.category">
           Category:
           <span class="text-black font-semibold">{{
             product.category.title
@@ -94,13 +130,13 @@ const addOrRemoveWishlist = async () => {
       </div>
       <div class="price flex gap-4 mt-3">
         <p class="text-2xl font-semibold text-main-color">
-          {{ product.price }} EGP
+          {{ product.price_after_discount }} EGP
         </p>
         <p
           class="text-font-color text-lg font-normal line-through"
           v-if="product.price != product.price_after_discount"
         >
-          {{ product.price_after_discount }} EGP
+          {{ product.price }} EGP
         </p>
         <Tag
           pt:root:class="bg-[#FBBC05] text-white text-sm font-semibold py-1.5 px-3"
@@ -117,19 +153,20 @@ const addOrRemoveWishlist = async () => {
           <label class="text-sm font-normal">Color</label>
           <div class="flex flex-wrap items-center gap-4">
             <RadioButton
-              v-for="color in product.colors"
-              :key="color.name"
+              v-for="color in product.colors.filter((c) => c?.color?.id)"
+              :key="color.color.id"
               v-model="selectedColor"
               name="dynamic"
-              :value="color.name"
+              :value="color"
+              @change="updateColorQuery"
               pt:root:class="border-2 rounded-full flex justify-center items-center border-transparent w-9 h-9	color-circle"
               pt:box:class="border-transparent w-full h-full"
               pt:icon:class="invisible"
-              :pt:box:style="{ backgroundColor: color.name }"
+              :pt:box:style="{ backgroundColor: `#${color.color.hexadecimal}` }"
             />
           </div>
         </div>
-        <div class="flex-1 flex flex-col gap-2">
+        <!-- <div class="flex-1 flex flex-col gap-2">
           <label class="text-sm font-normal">Size</label>
           <Select
             v-model="selectedSize"
@@ -138,7 +175,7 @@ const addOrRemoveWishlist = async () => {
             placeholder="Select..."
             class="w-full"
           />
-        </div>
+        </div> -->
       </div>
       <div class="flex gap-3 mt-3">
         <InputNumber
@@ -146,7 +183,7 @@ const addOrRemoveWishlist = async () => {
           showButtons
           buttonLayout="horizontal"
           :min="1"
-          :max="100"
+          :max="maxQty"
           fluid
           style="width: 160px"
           class="qty-input"
@@ -159,11 +196,11 @@ const addOrRemoveWishlist = async () => {
           </template>
         </InputNumber>
         <UiButtonComponent
-          content="Add to Bag"
-          icon="pi pi-shopping-bag"
+          :content="getButtonContent"
+          :icon="getButtonIcon"
           iconPos="right"
           class="flex-1 py-4 rounded-xl"
-          @click="addToCart"
+          @click="handleSubmit"
         />
       </div>
       <div class="flex justify-between mt-3">
@@ -178,6 +215,10 @@ const addOrRemoveWishlist = async () => {
           ></i>
           <i class="pi pi-heart text-main-color" v-else></i>
           <p class="text-main-color text-sm font-medium">Add to Wishlist</p>
+        </div>
+        <div class="flex gap-1 cursor-pointer" @click="copyProductLink">
+          <i class="pi pi-clone text-main-color"></i>
+          <p class="text-main-color text-sm font-medium">Share product</p>
         </div>
       </div>
     </div>

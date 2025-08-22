@@ -37,7 +37,7 @@ const tabs = ref([
       >
         <ProductReviews
           v-if="tab.title === 'Review'"
-          :reviews="product.reviews"
+          :product="product"
         />
         <p class="m-0" v-else>{{ tab.content }}</p>
       </TabPanel>

@@ -68,7 +68,8 @@ const props = defineProps({
               </div>
               <div class="flex items-center gap-2" style="width: 15%">
                 <!-- <span class="line-through text-sm text-font-color font-normal"
-                  >99EGP
+                v-if="item.product.price != item.product.price_after_discount"
+                  >{{ item.product.price }} EGP
                 </span> -->
                 <p class="text-main-color text-sm font-medium">
                   {{ item.product.price }} EGP
@@ -80,8 +81,8 @@ const props = defineProps({
                   v-model="item.quantity"
                   showButtons
                   buttonLayout="horizontal"
-                  :min="0"
-                  :max="100"
+                  :min="-1"
+                  :max="Number(item.product_color.quantity) ?? 0"
                   fluid
                   class="qty-input"
                   style="width: 150px"
@@ -90,11 +91,16 @@ const props = defineProps({
                   <template #incrementbuttonicon>
                     <span
                       class="pi pi-plus"
-                      @click="$emit('addToCard', item.product)"
+                      @click="
+                        $emit('addToCard', item.product, item.product_color)
+                      "
                     />
                   </template>
                   <template #decrementbuttonicon>
-                    <span class="pi pi-minus" @click="$emit('minusItem', item.id)"/>
+                    <span
+                      class="pi pi-minus"
+                      @click="$emit('minusItem', item.id)"
+                    />
                   </template>
                 </InputNumber>
               </div>

@@ -3,11 +3,8 @@
 const { $api, $toast }: any = useNuxtApp();
 const isLoading = useLoadingState();
 // 👉 Fetch
-const { data: cartProducts, refresh }: any = await useAsyncData(
-  "cart",
-  async () => {
-    return import.meta.client ? await $api("cart") : null;
-  }
+const { data: cartProducts, refresh }: any = await useAsyncData("cart", () =>
+  $api("cart")
 );
 // 👉 Methods
 const removeItem = async (cartId: any) => {
@@ -20,6 +17,7 @@ const removeItem = async (cartId: any) => {
   isLoading.value = false;
 };
 const minusItem = async (cartId: any) => {
+  console.log(cartId);
   isLoading.value = true;
   const res = await $api("minus_item", {
     method: "POST",
@@ -42,6 +40,7 @@ const addItem = async (product: any) => {
   if (res.status == "fail") $toast(res.message, "error");
   else $toast("the item added successfully", "success");
 };
+console.log(cartProducts);
 </script>
 <template>
   <div class="cart-container flex mb-20" style="gap: 64px" v-if="cartProducts">

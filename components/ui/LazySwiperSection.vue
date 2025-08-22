@@ -11,16 +11,12 @@ const props = defineProps({
 const { $api } = useNuxtApp();
 const swiperData = ref(null);
 const bannerData = ref(null);
-onMounted(async () => {
-  if (import.meta.client) {
-    const [Banner, Data] = await Promise.all([
-      props.bannerEndpoint ? $api(props.bannerEndpoint) : null,
-      $api(props.swiperEndpoint),
-    ]);
-    swiperData.value = Data.data;
-    bannerData.value = Banner?.data;
-  }
-});
+const [Banner, Data] = await Promise.all([
+  props.bannerEndpoint ? $api(props.bannerEndpoint) : null,
+  $api(props.swiperEndpoint),
+]);
+swiperData.value = Data.data;
+bannerData.value = Banner?.data;
 </script>
 <template>
   <div class="lazy-swiper-container">

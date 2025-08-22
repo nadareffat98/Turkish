@@ -6,14 +6,15 @@ const props = defineProps({
   max: Number,
   min: Number,
 });
-// 👉 Data
-const selectedSubCategory = ref(null);
+// 👉 router data
 const router = useRouter();
 const route = useRoute();
+// 👉 Data
+const selectedSubCategory = ref(null);
+const selectedCategoryId = ref("");
 const priceRange = ref([props.min, props.max]);
 const min = props.min;
 const max = props.max;
-// const selectedPrice = ref(true);
 const allColors = ref({
   id: null,
   title: "All Colors",
@@ -22,8 +23,27 @@ const allColors = ref({
 const selectedColor = ref(allColors.value);
 // 👉 Methods
 const getProductsbyCategory = (categoryId) => {
-  router.push({ query: { ...route.query, categoryId: categoryId } });
+  const newQuery = { ...route.query };
+
+  if (route.query.categoryId == categoryId) {
+    // if same category remove it
+    delete newQuery.categoryId;
+
+    //remove all of its subcategories
+    if (newQuery.subCategoryId) {
+      delete newQuery.subCategoryId;
+      selectedSubCategory.value = null;
+    }
+  } else {
+    // search for new category and remove other subCategories
+    newQuery.categoryId = categoryId;
+    delete newQuery.subCategoryId;
+    selectedSubCategory.value = null;
+  }
+
+  router.push({ query: newQuery });
 };
+
 const updateSubCategoryQuery = () => {
   router.push({
     query: { ...route.query, subCategoryId: selectedSubCategory.value },
@@ -55,20 +75,29 @@ const updatePriceQuery = () => {
   }
   router.push({ query: newQuery });
 };
+
+onMounted(() => {
+  if (route.query.categoryId) {
+    selectedCategoryId.value = Number(route.query.categoryId);
+  }
+  if (route.query.subCategoryId) {
+    selectedSubCategory.value = Number(route.query.subCategoryId);
+  }
+});
 </script>
 <template>
   <div class="flex flex-col gap-3">
     <div class="category-filter flex flex-col gap-4">
       <p class="text-black text-lg font-bold">Category</p>
-      <Accordion value="">
+      <Accordion :value="selectedCategoryId">
         <AccordionPanel
           v-for="category in categories"
           :key="category.id"
           :value="category.id"
           pt:root:class="border-none mb-3"
-          @click="getProductsbyCategory(category.id)"
         >
           <AccordionHeader
+            @click="getProductsbyCategory(category.id)"
             pt:root:class="border-2 border-border-color rounded-xl text-base font-medium text-main-color p-4"
             :pt:toggleicon:class="[
               category.sub_categories.length != 0 ? '' : 'hidden',

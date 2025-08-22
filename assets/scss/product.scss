@@ -1,6 +1,8 @@
 // product details
 :deep(.color-circle) {
+    transition: transform 0.2s ease;
     &.p-radiobutton-checked {
+        transform: scale(1.1);
         border-color: $second-color !important;
         .p-radiobutton-box {
             border: 3px solid white !important;

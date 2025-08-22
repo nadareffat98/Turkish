@@ -1,5 +1,8 @@
 <script setup>
 const isLoading = useLoadingState();
+useHead({
+  title: "Turkish Store",
+});
 </script>
 <template>
   <div>

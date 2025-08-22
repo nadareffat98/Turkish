@@ -5,34 +5,28 @@ const config = useRuntimeConfig();
 const route = useRoute();
 // 👉 Fetch
 // fetch filter data
-const { data } = await useAsyncData("filter-data", async () => {
-  if (!import.meta.client) return null;
-  const [categories, colors] = await Promise.all([
+const { data } = await useAsyncData("filter-data", () =>
+  Promise.all([
     $api("categories"),
     $api("colors", {
       baseURL: `${config.public.baseURL}/api/general/`,
     }),
-  ]);
+  ]).then(([categories, colors]) => ({ categories, colors }))
+);
 
-  return { categories, colors };
-});
 // fetch products
-const { data: products, refresh } = await useAsyncData(
-  "product-list",
-  async () => {
-    if (!import.meta.client) return null;
-    return await $api("products", {
-      query: {
-        category_id: route.query.categoryId,
-        sub_category_id: route.query.subCategoryId,
-        from_price: route.query.fromPrice,
-        to_price: route.query.toPrice,
-        sorted: route.query.sort,
-        keyword: route.query.keyword,
-        color_id: route.query.colorId,
-      },
-    });
-  }
+const { data: products, refresh } = await useAsyncData("product-list", () =>
+  $api("products", {
+    query: {
+      category_id: route.query.categoryId,
+      sub_category_id: route.query.subCategoryId,
+      from_price: route.query.fromPrice,
+      to_price: route.query.toPrice,
+      sorted: route.query.sort,
+      keyword: route.query.keyword,
+      color_id: route.query.colorId,
+    },
+  })
 );
 // 👉 Watch
 watch(
@@ -57,8 +51,13 @@ watch(
       <ProductList :products="products?.data" />
     </div>
   </div>
-  <div v-else>
-    <p>Loading products...</p>
+  <div v-else class="products-container flex gap-12">
+    <!-- <div class="left-side w-1/4">
+      <SkeletonFilter />
+    </div>
+    <div class="right-side w-3/4">
+      <SkeletonGrid />
+    </div> -->
   </div>
 </template>
 <style lang="scss" src="@/assets/scss/product.scss" scoped></style>

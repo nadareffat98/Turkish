@@ -1,11 +1,9 @@
-<script setup>
+<script setup lang="ts">
 //  👉 Props
 const props = defineProps(["slidersEndpoint", "id", "showMarquee"]);
 // 👉 Data
 const { $api } = useNuxtApp();
-const { data: sliders } = await useAsyncData(props.id, () => {
-  return !import.meta.client ? null : $api(props.slidersEndpoint);
-});
+const { data: sliders }: any = await useAsyncData(props.id, () => $api(props.slidersEndpoint));
 </script>
 <template>
   <div class="galleria-container" v-if="sliders">

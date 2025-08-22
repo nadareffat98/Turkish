@@ -5,9 +5,10 @@
         position: relative;
         .p-galleria-indicator-list {
             position: absolute;
-            gap: 0;
+            gap: 10px;
             bottom: 0;
-            right: 45%;
+            right: 50%;
+            transform: translateX(50%);
             button {
                 width: 8px;
                 height: 8px;
@@ -21,20 +22,11 @@
         }
     }
 }
-@media (max-width: 1024px) {
-    .p-galleria {
-        :deep(.p-galleria-content) {
-            .p-galleria-indicator-list {
-                right: 40%;
-            }
-        }
-    }
-}
+
 @media (max-width: 600px) {
     .p-galleria {
         :deep(.p-galleria-content) {
             .p-galleria-indicator-list {
-                right: 35%;
                 button {
                     width: 6px;
                     height: 6px;
@@ -42,15 +34,6 @@
                 .p-highlight button {
                     width: 80px;
                 }
-            }
-        }
-    }
-}
-@media (max-width: 360px) {
-    .p-galleria {
-        :deep(.p-galleria-content) {
-            .p-galleria-indicator-list {
-                right: 30%;
             }
         }
     }

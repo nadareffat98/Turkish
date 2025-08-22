@@ -5,6 +5,51 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
   ssr: true,
+  app: {
+    head: {
+      link: [
+        { rel: "icon", type: "image/svg+xml", href: "/fav/favicon.svg" },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "32x32",
+          href: "/fav/favicon-32x32.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "16x16",
+          href: "/fav/favicon-16x16.png",
+        },
+        {
+          rel: "apple-touch-icon",
+          sizes: "180x180",
+          href: "/fav/apple-touch-icon.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "192x192",
+          href: "/fav/android-chrome-192x192.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "512x512",
+          href: "/fav/android-chrome-512x512.png",
+        },
+        { rel: "manifest", href: "/site.webmanifest" },
+      ],
+      meta: [
+        { name: "theme-color", content: "#3d4435" },
+        { name: "apple-mobile-web-app-capable", content: "yes" },
+        {
+          name: "apple-mobile-web-app-status-bar-style",
+          content: "black-translucent",
+        },
+      ],
+    },
+  },
   runtimeConfig: {
     public: {
       baseURL: process.env.BASE_URL || "http://localhost:8000",

@@ -1,13 +1,18 @@
 <script setup>
 const { $api, $toast } = useNuxtApp();
 const isLoading = useLoadingState();
+const authStore = useAuthStore();
 // 👉 Fetch
-const { data: wishlist, refresh } = await useAsyncData("wishlist", async () => {
-  if (!import.meta.client) return null;
-  return await $api("favorites");
-});
+let wishlist = null;
+let refresh = null;
+if (authStore.isAuth) {
+  ({ data: wishlist, refresh } = await useAsyncData("wishlist", () =>
+    $api("favorites")
+  ));
+}
 // 👉 Methods
 const removeFromWishlist = async (id) => {
+  if (!authStore.isAuth) return;
   isLoading.value = true;
   const res = await $api("products/" + id + "/toggle-favorite", {
     method: "POST",
@@ -36,11 +41,11 @@ const addToCart = async (product) => {
 };
 </script>
 <template>
-  <div v-if="wishlist">
+  <div>
     <div
       class="empty-wishlist flex flex-col items-center justify-center text-center mx-auto"
       style="width: 430px"
-      v-if="wishlist.data.length == 0"
+      v-if="whishlist == null || wishlist.data.length == 0"
     >
       <img src="/public/imgs/heart_broken.png" class="w-24 h-24 mb-6" />
       <h3 class="text-3xl font-bold mb-2">Nothing found in Wishlist!</h3>

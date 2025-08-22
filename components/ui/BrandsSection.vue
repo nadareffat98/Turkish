@@ -2,13 +2,8 @@
 // 👉 Data
 const { $api } = useNuxtApp();
 const brandImgs = ref(null);
-// 👉 mounted
-onMounted(async () => {
-  if (import.meta.client) {
-    const data = await $api("brands");
-    brandImgs.value = data.data;
-  }
-});
+const data = await $api("brands");
+brandImgs.value = data.data;
 </script>
 <template>
   <div
@@ -23,4 +18,3 @@ onMounted(async () => {
     />
   </div>
 </template>
-

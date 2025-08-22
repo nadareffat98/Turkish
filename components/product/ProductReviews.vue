@@ -1,12 +1,45 @@
 <script setup lang="ts">
-const productRating = ref(3.5);
-const rates = ref([
-  { rate: 5, progress: 63, value: "(94,532)" },
-  { rate: 4, progress: 24, value: "(94,532)" },
-  { rate: 3, progress: 9, value: "(94,532)" },
-  { rate: 2, progress: 1, value: "(94,532)" },
-  { rate: 1, progress: 7, value: "(94,532)" },
-]);
+const props = defineProps(["product"]);
+const NumberOfRatings = computed(() => {
+  return (
+    props.product.five_stars +
+    props.product.four_stars +
+    props.product.three_stars +
+    props.product.two_stars +
+    props.product.one_star
+  );
+});
+const rates = computed(() => {
+  const total = NumberOfRatings.value || 1;
+
+  return [
+    {
+      rate: 5,
+      progress: (props.product.five_stars / total) * 100,
+      value: props.product.five_stars,
+    },
+    {
+      rate: 4,
+      progress: (props.product.four_stars / total) * 100,
+      value: props.product.four_stars,
+    },
+    {
+      rate: 3,
+      progress: (props.product.three_stars / total) * 100,
+      value: props.product.three_stars,
+    },
+    {
+      rate: 2,
+      progress: (props.product.two_stars / total) * 100,
+      value: props.product.two_stars,
+    },
+    {
+      rate: 1,
+      progress: (props.product.one_star / total) * 100,
+      value: props.product.one_star,
+    },
+  ];
+});
 </script>
 <template>
   <div class="reviews-container p-10 flex flex-col gap-10">
@@ -14,15 +47,16 @@ const rates = ref([
       <div
         class="flex flex-col basis-auto items-center justify-center gap-3 p-8 bg-[#FBFBFB] rounded"
       >
-        <h3 class="font-bold text-6xl text-black">4.7</h3>
+        <h3 class="font-bold text-6xl text-black">{{ product.avg_rate }}</h3>
         <Rating
-          v-model="productRating"
+          v-model="product.avg_rate"
           :readonly="true"
           pt:onicon:style="color:#FBBC05"
           pt:officon:style="color:#FBBC05"
         />
-        <p class="text-base font-semibold text-black">
-          Customer Rating <span class="text-main-color"> (934,516)</span>
+        <p class="text-base font-semibold text-black text-center">
+          Customer Rating
+          <span class="text-main-color"> ({{ NumberOfRatings }})</span>
         </p>
       </div>
       <div class="rate-detailes flex flex-col gap-6 basis-7/12">
@@ -45,11 +79,14 @@ const rates = ref([
           ></ProgressBar>
           <p class="font-medium text-sm text-black flex gap-1">
             {{ rate.progress }}%
-            <span class="font-normal text-font-color"> {{ rate.value }}</span>
+            <span class="font-normal text-font-color" v-if="rate.value > 0">( {{ rate.value }} )</span>
           </p>
         </div>
       </div>
     </div>
-    <ProductCustomerFeedback />
+    <ProductCustomerFeedback v-if="product.reviews.length > 0" />
+    <p v-else class="text-base font-semibold text-black text-center">
+      No Reviews Found
+    </p>
   </div>
 </template>

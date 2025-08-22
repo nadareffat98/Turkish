@@ -2,8 +2,8 @@
 // 👉 Data
 const { $api } = useNuxtApp();
 const productId = useRoute().params.id;
-const { data: product, refresh } = await useAsyncData("product", () =>
-  import.meta.client ? $api("products/" + productId) : null
+const { data: product, refresh } = await useAsyncData(`product-${productId}`, () =>
+  $api("products/" + productId)
 );
 </script>
 <template>

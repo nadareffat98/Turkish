@@ -64,5 +64,6 @@ const getProductsbySort = () => {
       </template>
       <template #empty> There is no products </template>
     </DataView>
+    <SkeletonGrid v-else></SkeletonGrid>
   </div>
 </template>

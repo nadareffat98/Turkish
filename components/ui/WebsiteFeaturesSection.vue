@@ -1,11 +1,9 @@
-<script setup>
+<script setup lang="ts">
 // 👉 Data
 const { $api } = useNuxtApp();
-const { data: websiteFeatures } = await useAsyncData(
-  "website-features",
-  async () => {
-    return !import.meta.client ? null : await $api("website_features");
-  }
+const { data: websiteFeatures }: any = await useAsyncData(
+  "website_features",
+  () => $api("website_features")
 );
 </script>
 <template>
@@ -16,7 +14,7 @@ const { data: websiteFeatures } = await useAsyncData(
     <div class="border border-border-color rounded-md flex p-4">
       <template v-for="(item, index) in websiteFeatures.data" :key="item.id">
         <div class="flex-1 flex justify-center items-center gap-4">
-          <img :src="item.image" class="w-8 h-8"/>
+          <img :src="item.image" class="w-8 h-8" />
           <div class="flex flex-col gap-1">
             <p class="text-main-color text-base font-medium">
               {{ item.title }}

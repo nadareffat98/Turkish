@@ -6,7 +6,7 @@ const props = defineProps({
 // 👉 Methods
 const goToProduct = () => {
   navigateTo(`/products/${props.product.id}`);
-}
+};
 </script>
 <template>
   <Card
@@ -20,8 +20,8 @@ const goToProduct = () => {
       <img
         :alt="product.title"
         :src="product.main_image"
-        class="w-full rounded-t-xl"
-        style="height: 308px;"
+        class="w-full rounded-t-xl object-cover object-center"
+        style="height: 308px"
       />
       <!-- <Tag
         pt:root:class="absolute top-0 left-0 py-2 px-4 rounded-tl-xl  rounded-tr-none rounded-bl-none rounded-br-xl bg-second-color text-white"
