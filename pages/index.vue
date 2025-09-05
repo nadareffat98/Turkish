@@ -65,7 +65,11 @@ onMounted(async () => {
 </script>
 <template>
   <div class="home-container">
-    <UiGalleriaSection id="home-slider" sliders-endpoint="sliders" :show-marquee="true" />
+    <UiGalleriaSection
+      id="home-slider"
+      sliders-endpoint="sliders"
+      :show-marquee="true"
+    />
     <UiWebsiteFeaturesSection />
     <!-- Section 1 -->
     <div ref="section1Ref" class="section">
@@ -111,6 +115,7 @@ onMounted(async () => {
         sub-title="Explore Our Products"
         banner-endpoint="custom_build_banner"
         grid-endpoint="our_products"
+        link-to="/products"
       />
       <SkeletonSwiper v-else />
     </div>
@@ -122,6 +127,7 @@ onMounted(async () => {
         sub-title="New collection"
         banner-endpoint="seeking_unavailable_banner"
         grid-endpoint="new_collection"
+        link-to="/products?sort=best_seller"
       />
       <SkeletonSwiper v-else />
     </div>

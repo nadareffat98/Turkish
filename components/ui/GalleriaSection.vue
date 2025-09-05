@@ -25,19 +25,7 @@ const { data: sliders }: any = await useAsyncData(props.id, () => $api(props.sli
         />
       </template>
     </Galleria>
-    <div
-      class="relative overflow-hidden w-full bg-second-color text-white py-2"
-      v-if="showMarquee"
-    >
-      <div class="flex whitespace-nowrap animate-marquee w-max">
-        <div class="flex gap-8" v-for="i in 2" :key="i">
-          <div class="flex items-center gap-2 px-4" v-for="j in 5" :key="j">
-            <img src="/logo/logo.png" class="w-10 h-6" />
-            <span class="text-lg font-bold">Up to 20% sale</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <UiMarqueeSection v-if="showMarquee" />
   </div>
 </template>
 <style lang="scss" src="@/assets/scss/galleria.scss" scoped />

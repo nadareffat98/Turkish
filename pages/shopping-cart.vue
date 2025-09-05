@@ -40,7 +40,6 @@ const addItem = async (product: any) => {
   if (res.status == "fail") $toast(res.message, "error");
   else $toast("the item added successfully", "success");
 };
-console.log(cartProducts);
 </script>
 <template>
   <div class="cart-container flex mb-20" style="gap: 64px" v-if="cartProducts">

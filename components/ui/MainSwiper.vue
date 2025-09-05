@@ -15,30 +15,32 @@ const navigationOptions = ref({
 });
 </script>
 <template>
-  <div class="main-swiper-container flex flex-col gap-5 pt-20">
+  <div
+    class="main-swiper-container flex flex-col gap-5 lg:py-16 sm:py-10 py-4"
+  >
     <div class="relative">
-      <p
-        class="before:bg-second-color before:absolute before:w-4 before:h-9 before:rounded before:-left-0 before:top-1/2 before:-translate-y-1/2 text-base font-bold text-second-color pl-7"
-      >
+      <p class="title-container">
         {{ title }}
       </p>
     </div>
-    <div class="flex justify-between">
-      <h3 class="text-4xl font-bold text-main-color">{{ subtitle }}</h3>
+    <div class="flex justify-between items-center gap-2">
+      <h3 class="sm:text-4xl text-xl font-bold text-main-color">
+        {{ subtitle }}
+      </h3>
       <div class="navigation-container flex gap-2">
         <Button
           icon="pi pi-arrow-left"
           variant="text"
           rounded
           :class="'custom-' + className + '-prev'"
-          class="text-black bg-border-color border-0"
+          class="swiper-buttons"
         />
         <Button
           icon="pi pi-arrow-right"
           variant="text"
           rounded
           :class="'custom-' + className + '-next'"
-          class="text-black bg-border-color border-0"
+          class="swiper-buttons"
         />
       </div>
     </div>
@@ -57,3 +59,36 @@ const navigationOptions = ref({
     </Swiper>
   </div>
 </template>
+<style scoped lang="scss">
+.title-container {
+  padding-left: 18px;
+  color: $second-color;
+  font-size: 14px;
+  font-weight: 700;
+  &::before {
+    content: "";
+    background: $second-color;
+    position: absolute;
+    border-radius: 4px;
+    width: 9px;
+    height: 29px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  @media (min-width: 640px) {
+    &::before {
+      width: 16px;
+      height: 36px;
+    }
+    font-size: 16px;
+    padding-left: 28px;
+  }
+}
+.swiper-buttons {
+  @apply text-black bg-border-color border-0 sm:w-10 w-8 sm:h-10 h-8;
+  .p-button-icon {
+    @apply sm:text-base text-sm;
+  }
+}
+</style>

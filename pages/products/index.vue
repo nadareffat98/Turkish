@@ -52,12 +52,12 @@ watch(
     </div>
   </div>
   <div v-else class="products-container flex gap-12">
-    <!-- <div class="left-side w-1/4">
+    <div class="left-side w-1/4">
       <SkeletonFilter />
     </div>
     <div class="right-side w-3/4">
       <SkeletonGrid />
-    </div> -->
+    </div>
   </div>
 </template>
 <style lang="scss" src="@/assets/scss/product.scss" scoped></style>

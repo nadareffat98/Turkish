@@ -2,9 +2,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const config = useRuntimeConfig();
   const authStore = useAuthStore();
   const guestToken = await getGuestToken();
+  const query: Record<string, string> = {};
+  if (!authStore.isAuth && guestToken) {
+    query.guest_token = guestToken;
+  }
   const api = $fetch.create({
     baseURL: `${config.public.baseURL}/api/website/`,
-    query: { guest_token: authStore.isAuth ? null : guestToken },
+    query,
     onRequest({ options }) {
       if (authStore.token) {
         options.headers.set("Authorization", `Bearer ${authStore.token}`);

@@ -48,8 +48,8 @@ const logout = () => {
 </script>
 <template>
   <!---------------------------- System bar ------------------------------->
-  <div class="system-bar flex justify-between items-center py-1">
-    <p class="text-white text-sm font-normal">
+  <div class="system-bar py-1">
+    <p class="text-white sm:text-sm text-xs font-normal">
       Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
     </p>
     <Select
@@ -70,9 +70,9 @@ const logout = () => {
       pt:root:class="menubar-container px-0 py-4 border-none"
     >
       <template #start>
-        <NuxtLink to="/" class="flex gap-2 items-center">
-          <img alt="logo" src="/logo/coloredLogo.png" class="h-10" />
-          <img alt="turkish" src="/logo/coloredTurkish.png" class="h-6" />
+        <NuxtLink to="/" class="flex sm:gap-2 gap-1 items-center">
+          <img alt="logo" src="/logo/coloredLogo.png" class="sm:h-10 h-4" />
+          <img alt="turkish" src="/logo/coloredTurkish.png" class="sm:h-6 h-3" />
         </NuxtLink>
       </template>
       <template #item="{ item }">
@@ -100,7 +100,7 @@ const logout = () => {
             </IconField>
           </template>
         </Inplace>
-        <NuxtLink to="/wishlist" class="header-icons rounded-full">
+        <NuxtLink to="/wishlist" class="header-icons rounded-full" v-if="auth.isAuth">
           <i class="pi pi-heart" />
         </NuxtLink>
         <NuxtLink to="/shopping-cart" class="header-icons rounded-full">

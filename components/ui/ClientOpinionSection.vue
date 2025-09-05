@@ -7,7 +7,7 @@ clientOpinionData.value = data.data;
 </script>
 <template>
   <div
-    class="body-content client-opinion-container mt-16"
+    class="body-content client-opinion-container lg:mt-16 sm:mt-10 mt-6"
     v-if="clientOpinionData"
   >
     <div class="relative">
@@ -17,28 +17,24 @@ clientOpinionData.value = data.data;
         style="font-size: 8rem"
       />
     </div>
-    <div class="grid grid-cols-12 gap-6">
-      <div class="md:col-span-6 grid grid-cols-6 gap-4">
-        <h3 class="font-bold text-6xl text-main-color mt-11 ml-11 col-span-6">
+    <div class="grid grid-cols-12 sm:gap-6 gap-3">
+      <div class="sm:col-span-6 col-span-12 grid grid-cols-6 gap-4">
+        <h3 class="title">
           What our loving clients are saying
           <span class="text-second-color">about us</span>
         </h3>
         <Card
-          class="col-start-2 col-span-5 p-7 mb-auto"
+          class="sm:col-start-2 sm:col-span-5 col-span-12 sm:p-7 p-3 mb-auto z-10"
           pt:body:class="p-0 gap-0"
         >
           <template #content>
             <div class="flex gap-4">
-              <font-awesome
-                icon="fa-solid fa-quote-left"
-                class="text-second-color"
-                style="font-size: 1rem"
-              />
-              <div class="flex flex-col gap-6">
-                <p class="text-base font-normal">
+              <font-awesome icon="fa-solid fa-quote-left" class="icon" />
+              <div class="opinion-content">
+                <p class="opinion-desc">
                   {{ clientOpinionData[2]?.desc }}
                 </p>
-                <p class="text-lg font-bold">
+                <p class="client">
                   {{ clientOpinionData[2]?.title }}
                 </p>
               </div>
@@ -46,24 +42,23 @@ clientOpinionData.value = data.data;
           </template>
         </Card>
       </div>
-      <div class="md:col-span-6 grid grid-cols-6 gap-16 pt-24" style="">
+      <div class="right-side">
         <template v-for="(opinion, index) in clientOpinionData.slice(0, 2)">
           <Card
-            :class="[index == 0 ? 'col-span-6' : 'col-span-4', 'p-7']"
+            :class="[
+              index == 0 ? 'col-span-6' : 'lg:col-span-4 col-span-6',
+              'sm:p-7 p-3',
+            ]"
             pt:body:class="p-0 gap-0"
           >
             <template #content>
               <div class="flex gap-4">
-                <font-awesome
-                  icon="fa-solid fa-quote-left"
-                  class="text-second-color"
-                  style="font-size: 1rem"
-                />
-                <div class="flex flex-col gap-6">
-                  <p class="text-base font-normal">
+                <font-awesome icon="fa-solid fa-quote-left" class="icon" />
+                <div class="opinion-content">
+                  <p class="opinion-desc">
                     {{ opinion?.desc }}
                   </p>
-                  <p class="text-lg font-bold">
+                  <p class="client">
                     {{ opinion?.title }}
                   </p>
                 </div>
@@ -79,6 +74,24 @@ clientOpinionData.value = data.data;
 h3 {
   span {
     font-family: "El Messiri" !important;
+  }
+}
+.title {
+  @apply font-bold lg:text-6xl sm:text-3xl text-xl text-main-color sm:mt-11 mt-5 lg:ml-11 sm:col-span-6 col-span-12;
+}
+.right-side {
+  @apply sm:col-span-6 col-span-12 grid grid-cols-6 lg:gap-16 sm:gap-10 gap-4 sm:pt-24;
+}
+.icon {
+  @apply text-second-color text-base;
+}
+.opinion-content {
+  @apply flex flex-col sm:gap-6 gap-3;
+  .opinion-desc {
+    @apply sm:text-base text-sm font-normal;
+  }
+  .client {
+    @apply sm:text-lg text-base font-bold;
   }
 }
 </style>

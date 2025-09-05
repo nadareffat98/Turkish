@@ -1,33 +1,54 @@
 <script setup>
-// 👉 Props
 const props = defineProps({
   title: String,
   subTitle: String,
-  bannerEndpoint: String, // API for banner image
-  gridEndpoint: String, // API for grid images
+  bannerEndpoint: String,
+  gridEndpoint: String,
+  linkTo: String,
 });
-// 👉 Data
+
 const { $api } = useNuxtApp();
-const gridData = ref(null);
-const bannerData = ref(null);
-onMounted(async () => {
-  if (import.meta.client) {
-    const [Banner, Data] = await Promise.all([
-      props.bannerEndpoint ? $api(props.bannerEndpoint) : null,
-      $api(props.gridEndpoint),
-    ]);
-    gridData.value = Data.data;
-    bannerData.value = Banner.data;
-  }
-});
+
+// Grid
+const {
+  data: gridData,
+  pending: gridPending,
+  refresh: refreshGrid,
+} = await useAsyncData(
+  `${props.gridEndpoint}`,
+  () => $api(props.gridEndpoint),
+  { lazy: true }
+);
+
+// Banner
+const { data: bannerData, pending: bannerPending } = await useAsyncData(
+  `${props.bannerEndpoint}`,
+  () => (props.bannerEndpoint ? $api(props.bannerEndpoint) : null),
+  { lazy: true }
+);
 </script>
+
 <template>
   <div class="lazy-grid-container">
-    <div class="body-content flex flex-col items-start gap-6" v-if="gridData">
-      <UiMainGrid :title="title" :subtitle="subTitle" :items="gridData" />
-      <UiButtonComponent label="View All Collection"/>
+    <!-- Grid -->
+    <div class="body-content" v-if="!gridPending && gridData">
+      <UiMainGrid
+        :title="title"
+        :subtitle="subTitle"
+        :items="gridData.data"
+        :link-to="linkTo"
+        @refresh="refreshGrid"
+      />
     </div>
     <SkeletonSwiper v-else />
-    <img v-if="bannerData" :src="bannerData.image" :alt="bannerData.title" class="w-full mt-16"/>
+
+    <!-- Banner -->
+    <div v-if="!bannerPending && bannerData">
+      <img
+        :src="bannerData.data.image"
+        :alt="bannerData.data.title"
+        class="w-full"
+      />
+    </div>
   </div>
 </template>

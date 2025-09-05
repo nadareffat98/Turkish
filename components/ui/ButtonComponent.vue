@@ -1,8 +1,12 @@
 <script setup>
 const props = defineProps({
-    content: String
-})
+  content: String,
+});
 </script>
 <template>
-    <Button class="bg-second-color text-white border-second-color font-semibold "  :label="content"/>
+  <Button
+    class="bg-second-color text-white border-second-color font-semibold mt-1"
+    :label="content"
+    @click="$emit('click')"
+  />
 </template>

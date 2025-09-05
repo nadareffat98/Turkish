@@ -1,6 +1,4 @@
 <script setup>
-import { get } from "@vueuse/core";
-
 // 👉 Props
 const props = defineProps(["product"]);
 // 👉 Emits

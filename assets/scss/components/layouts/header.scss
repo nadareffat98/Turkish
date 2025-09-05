@@ -1,7 +1,15 @@
 .system-bar {
     background-color: $main-color;
+    display: flex;
+    flex-direction: column;
     p {
         font-family: $main-font;
+    }
+    @media (min-width:640px)
+    {
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
     }
 }
 // toolbar
@@ -35,11 +43,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 12px;
+            padding: 6px;
             &:hover,
             &.router-link-exact-active {
                 background-color: lighten($main-color, 50%);
                 margin: 0 1px;
+            }
+            @media (min-width: 640px) {
+                padding: 12px;
             }
         }
     }
