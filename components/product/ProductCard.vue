@@ -11,6 +11,7 @@ const { $api, $toast } = useNuxtApp();
 const authStore = useAuthStore();
 const loaded = ref(false);
 
+const isFavorite = ref(props.product.is_favorite);
 // 👉 Methods
 const goToProduct = () => {
   navigateTo(`/products/${props.product.id}`);
@@ -18,16 +19,19 @@ const goToProduct = () => {
 // toggle favorite icon
 const addOrRemoveWishlist = async () => {
   isLoading.value = true;
-  const res = await $api("products/" + props.product.id + "/toggle-favorite", {
-    method: "POST",
-  });
-  if (res.status == "fail") $toast(res.message, "error");
-  else {
-    emit("refresh");
-  }
-  setTimeout(() => {
+  try {
+    const res = await $api(
+      "products/" + props.product.id + "/toggle-favorite",
+      {
+        method: "POST",
+      }
+    );
+    isFavorite.value = !isFavorite.value;
+  } catch (e) {
+    if (e.data && e.data.message) $toast(e.data.message, "error");
+  } finally {
     isLoading.value = false;
-  }, 1000);
+  }
 };
 </script>
 <template>
@@ -42,7 +46,7 @@ const addOrRemoveWishlist = async () => {
     <template #header>
       <div class="icons-container">
         <Button
-          :icon="product.is_favorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+          :icon="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
           rounded
           aria-label="whishlist"
           @click.stop="addOrRemoveWishlist"

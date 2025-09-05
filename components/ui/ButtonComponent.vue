@@ -7,6 +7,5 @@ const props = defineProps({
   <Button
     class="bg-second-color text-white border-second-color font-semibold mt-1"
     :label="content"
-    @click="$emit('click')"
   />
 </template>

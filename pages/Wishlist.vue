@@ -1,22 +1,21 @@
 <script setup>
+definePageMeta({
+  middleware: "auth",
+});
 const { $api, $toast } = useNuxtApp();
 const isLoading = useLoadingState();
 const authStore = useAuthStore();
 // 👉 Fetch
-let wishlist = null;
-let refresh = null;
-if (authStore.isAuth) {
-  ({ data: wishlist, refresh } = await useAsyncData("wishlist", () =>
-    $api("favorites")
-  ));
-}
+const { data: wishlist, refresh } = await useAsyncData("wishlist", () =>
+  $api("favorites")
+);
 // 👉 Methods
 const removeFromWishlist = async (id) => {
-  if (!authStore.isAuth) return;
   isLoading.value = true;
   const res = await $api("products/" + id + "/toggle-favorite", {
     method: "POST",
   });
+  console.log(res);
   if (res.status == "fail") $toast(res.message, "error");
   else {
     refresh();
@@ -25,38 +24,13 @@ const removeFromWishlist = async (id) => {
     isLoading.value = false;
   }, 1000);
 };
-const addToCart = async (product) => {
-  isLoading.value = true;
-  const res = await $api("cart", {
-    method: "POST",
-    body: {
-      product_id: product.id,
-      quantity: 1,
-      // colored_id: selectedColor.value?.id ?? null,
-    },
-  });
-  isLoading.value = false;
-  if (res.status == "fail") $toast(res.message, "error");
-  else $toast("the item added to your cart successfully", "success");
-};
 </script>
 <template>
   <div>
     <div
-      class="empty-wishlist flex flex-col items-center justify-center text-center mx-auto"
-      style="width: 430px"
-      v-if="whishlist == null || wishlist.data.length == 0"
+      class="wishlist-container flex flex-col gap-6"
+      v-if="wishlist && wishlist.data.length > 0"
     >
-      <img src="/public/imgs/heart_broken.png" class="w-24 h-24 mb-6" />
-      <h3 class="text-3xl font-bold mb-2">Nothing found in Wishlist!</h3>
-      <span class="text-main-color text-sm font-medium mb-8"
-        >Once you have added items to your Wishlist, the page should display the
-        contents of your cart, including the products, quantities, and
-        cost.</span
-      >
-      <UiButtonComponent content="Go Shopping" as="router-link" to="/" />
-    </div>
-    <div class="wishlist-container flex flex-col gap-6" v-else>
       <Card
         class="cart-products-container"
         pt:root:class="shadow-none border-2 border-border-color  rounded-xl"
@@ -116,12 +90,7 @@ const addToCart = async (product) => {
                         variant="text"
                       />
                     </div>
-                    <div class="flex items-center gap-6" style="width: 10%">
-                      <Button
-                        class="bg-second-color text-white border-second-color w-12 h-12 rounded-xl"
-                        icon="pi pi-shopping-cart"
-                        @click="addToCart(item)"
-                      />
+                    <div class="flex items-center" style="width: 10%">
                       <i
                         class="pi pi-times-circle text-font-color cursor-pointer"
                         @click="removeFromWishlist(item.id)"
@@ -137,6 +106,20 @@ const addToCart = async (product) => {
       <NuxtLink to="/products" class="text-second-color text-lg font-semibold"
         >Continue Shopping</NuxtLink
       >
+    </div>
+    <div
+      class="empty-wishlist flex flex-col items-center justify-center text-center mx-auto"
+      style="width: 430px"
+      v-else
+    >
+      <img src="/public/imgs/heart_broken.png" class="w-24 h-24 mb-6" />
+      <h3 class="text-3xl font-bold mb-2">Nothing found in Wishlist!</h3>
+      <span class="text-main-color text-sm font-medium mb-8"
+        >Once you have added items to your Wishlist, the page should display the
+        contents of your cart, including the products, quantities, and
+        cost.</span
+      >
+      <UiButtonComponent content="Go Shopping" as="router-link" to="/" />
     </div>
   </div>
 </template>

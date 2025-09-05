@@ -2,6 +2,8 @@
 .account-menu-container {
     overflow-x: scroll;
     white-space: nowrap;
+    box-shadow: 0px 0px 4px 0px #00000040;
+    padding: 10px;
     &::-webkit-scrollbar {
         height: 0px;
     }
@@ -40,7 +42,7 @@
 }
 @media (min-width: 1024px) {
     .account-menu-container {
-        box-shadow: 0px 0px 4px 0px #00000040;
+        padding: 0;
         .router-link-exact-active {
             border-radius: 0;
             &:first-child {

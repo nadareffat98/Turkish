@@ -56,8 +56,3 @@ const logout = () => {
     </NuxtLink>
   </div>
 </template>
-<!-- <style
-  lang="scss"
-  src="@/assets/scss/components/profile/profile-menu.scss"
-  scoped
-/> -->
