@@ -27,15 +27,15 @@ const onSubmit = handleSubmit(async (values: any) => {
 <template>
   <AuthCardForm>
     <template #header>
-      <p class="text-main-color">Welcome back!</p>
-      <h3 class="text-4xl font-bold text-main-color">
+      <p class="subtitle-auth">Welcome back!</p>
+      <h3 class="title-auth">
         Sign in to your account
       </h3>
     </template>
     <template #content>
       <form
         @submit="onSubmit"
-        class="flex flex-col gap-4 w-full form-container"
+        class="flex flex-col sm:gap-4 gap-2 w-full form-container"
       >
         <div class="flex flex-col gap-1">
           <label>Email Address*</label>
@@ -72,7 +72,7 @@ const onSubmit = handleSubmit(async (values: any) => {
           <Button
             label="Forget password ?"
             variant="text"
-            class="text-second-color text-sm font-normal hover:bg-inherit p-0"
+            class="text-second-color sm:text-sm text-xs font-normal hover:bg-inherit p-0"
             @click="$emit('changeForm', 'forgetPassword', null)"
           />
         </div>
@@ -84,7 +84,7 @@ const onSubmit = handleSubmit(async (values: any) => {
       </form>
     </template>
     <template #footer>
-      <p class="text-main-color text-sm font-medium mt-2">
+      <p class="footer-auth">
         Don’t have an account ?
         <NuxtLink class="text-second-color" to="/auth/sign-up">
           Sign up</NuxtLink

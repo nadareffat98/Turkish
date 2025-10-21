@@ -5,7 +5,7 @@ watch(
   () => route.path,
   (newPath) => {
     if (newPath == "/") bodyClass.value = "pb-20";
-    else bodyClass.value = "body-content py-20";
+    else bodyClass.value = "body-content lg:py-20 py-10";
   },
   { immediate: true }
 );

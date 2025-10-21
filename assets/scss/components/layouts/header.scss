@@ -35,7 +35,7 @@
         }
     }
     .p-menubar-end {
-        margin-left: 0;
+        @apply ltr:ml-0 rtl:mr-0 !important;
         display: flex;
         .p-button,
         .header-icons {
@@ -79,6 +79,7 @@
         .p-menubar-end {
             order: 3;
             margin-left: auto;
+
         }
     }
 }

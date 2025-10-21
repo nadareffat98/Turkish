@@ -1,18 +1,33 @@
+:deep(.title-auth) {
+    @apply lg:text-4xl sm:text-2xl text-xl font-bold text-main-color;
+}
+:deep(.subtitle-auth) {
+    @apply text-main-color sm:text-base text-sm;
+}
+:deep(.footer-auth) {
+    @apply text-main-color sm:text-sm text-xs font-medium mt-2;
+}
 :deep(.form-container) {
     label {
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 500;
         color: $main-color;
+        @media (min-width: 640px) {
+            font-size: 14px;
+        }
     }
     .p-inputtext,
     .p-textarea,
     .p-select {
-        padding: 14px 16px;
+        padding: 10px 12px;
         .p-placeholder {
             padding: 0 !important;
         }
         &.p-inputwrapper-filled .p-select-label {
             padding: 0 !important;
+        }
+        @media (min-width: 640px) {
+            padding: 14px 16px;
         }
     }
     .p-inputgroup {
@@ -49,9 +64,14 @@
         border-color: #d6d4ce !important;
     }
     .auth-button {
-        margin-top: 16px;
-        margin-bottom: 16px;
-        font-size: 18px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 16px;
         border-radius: 8px;
+        @media (min-width: 640px) {
+            margin-top: 16px;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
     }
 }

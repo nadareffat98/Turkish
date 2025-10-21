@@ -37,16 +37,16 @@ const onSubmit = handleSubmit(async (values: any) => {
   <div class="register-container">
     <AuthCardForm>
       <template #header>
-        <p class="text-main-color text-base font-medium">Welcome !</p>
-        <h3 class="text-4xl font-bold text-main-color">Create an account</h3>
+        <p class="subtitle-auth">Welcome !</p>
+        <h3 class="title-auth">Create an account</h3>
       </template>
       <template #content>
         <form
           @submit="onSubmit"
-          class="flex flex-col gap-4 w-full form-container"
+          class="flex flex-col sm:gap-4 gap-2 w-full form-container"
         >
-          <div class="flex gap-3">
-            <div class="flex flex-col gap-1">
+          <div class="flex gap-3 w-full">
+            <div class="flex flex-col gap-1 flex-1">
               <label>First Name*</label>
               <InputText
                 v-model="firstName"
@@ -60,7 +60,7 @@ const onSubmit = handleSubmit(async (values: any) => {
                 {{ errors.first_name }}
               </small>
             </div>
-            <div class="flex flex-col gap-1">
+            <div class="flex flex-col gap-1 flex-1">
               <label>Last Name*</label>
               <InputText
                 v-model="lastName"
@@ -197,7 +197,7 @@ const onSubmit = handleSubmit(async (values: any) => {
         </form>
       </template>
       <template #footer>
-        <p class="text-main-color text-sm font-medium mt-2">
+        <p class="footer-auth">
           Already have an account?
           <NuxtLink class="text-second-color" to="/auth/sign-in">
             Sign in</NuxtLink

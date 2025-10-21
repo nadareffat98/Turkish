@@ -5,7 +5,6 @@ const props = defineProps(["product"]);
 const emit = defineEmits(["refreshProduct"]);
 // 👉 Data
 const authStore = useAuthStore();
-const guestToken = await getGuestToken();
 const isLoading = useLoadingState();
 const { $api, $toast } = useNuxtApp();
 const selectedColor = ref(
@@ -77,11 +76,11 @@ const getButtonIcon = computed(() => {
 });
 </script>
 <template>
-  <div class="product-details flex gap-14 pb-20">
-    <div class="product-image flex flex-col" style="width: 545px">
+  <div class="product-details flex lg:flex-row flex-col lg:gap-16 sm:gap-6 pb-20">
+    <div class="product-image flex flex-col lg:w-2/4 w-full">
       <UiSwiperThumbs :images="product.other_images" />
     </div>
-    <div class="product-info flex-1 flex flex-col gap-2 ml-5">
+    <div class="product-info flex-1 flex flex-col gap-2 lg:w-2/4 w-full">
       <div class="rating flex gap-1.5">
         <Rating
           v-model="product.avg_rate"
@@ -89,7 +88,7 @@ const getButtonIcon = computed(() => {
           pt:onicon:style="color:#FBBC05"
           pt:officon:style="color:#FBBC05"
         />
-        <p class="text-sm font-semibold">{{ product.avg_rate }} Star Rating</p>
+        <p class="sm:text-sm text-xs font-semibold">{{ product.avg_rate }} Star Rating</p>
         <span
           class="text-font-color text-sm font-normal"
           v-if="numberOfRatings > 0"
@@ -183,8 +182,7 @@ const getButtonIcon = computed(() => {
           :min="1"
           :max="maxQty"
           fluid
-          style="width: 160px"
-          class="qty-input"
+          class="qty-input max-w-40"
         >
           <template #incrementbuttonicon>
             <span class="pi pi-plus" />

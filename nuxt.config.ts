@@ -52,7 +52,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      baseURL: process.env.BASE_URL || "http://localhost:8000",
+      baseURL: process.env.NUXT_PUBLIC_BASE_URL || "http://localhost:8000",
     },
   },
   modules: [
@@ -61,7 +61,6 @@ export default defineNuxtConfig({
     "@primevue/nuxt-module",
     "@vesp/nuxt-fontawesome",
     "nuxt-swiper",
-    "@nuxt/devtools",
     "@vee-validate/nuxt",
     ["@pinia/nuxt", { autoImports: ["defineStore", "acceptHMRUpdate"] }],
     "pinia-plugin-persistedstate/nuxt",
@@ -76,9 +75,26 @@ export default defineNuxtConfig({
             wght: "200..600",
           },
         },
+        display: "swap",
       },
     ],
+    "@nuxtjs/i18n",
   ],
+  i18n: {
+    locales: [
+      { code: "en", name: "English", iso: "en-US" },
+      { code: "ar", name: "العربية", iso: "ar-EG" },
+    ],
+    defaultLocale: "en",
+    strategy: "no_prefix",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "lang",
+      alwaysRedirect: false,
+      fallbackLocale: "en",
+    },
+    vueI18n: "~/i18n.config.ts",
+  },
   primevue: {
     options: {
       theme: {

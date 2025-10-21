@@ -33,12 +33,12 @@ const onSubmit = handleSubmit(async (values: any) => {
 <template>
   <AuthCardForm>
     <template #header>
-      <h3 class="text-4xl font-bold text-main-color">Reset your password</h3>
+      <h3 class="title-auth">Reset your password</h3>
     </template>
     <template #content>
       <form
         @submit="onSubmit"
-        class="flex flex-col gap-4 w-full form-container"
+        class="flex flex-col sm:gap-4 gap-2 w-full form-container"
       >
         <div class="flex flex-col gap-1">
           <label>Password</label>
@@ -82,12 +82,12 @@ const onSubmit = handleSubmit(async (values: any) => {
       </form>
     </template>
     <template #footer>
-      <p class="text-main-color text-sm font-medium mt-2">
+      <p class="footer-auth">
         Already have an account?
         <Button
           label="Sign in"
           variant="text"
-          class="text-second-color text-sm font-medium hover:bg-inherit p-0"
+          class="text-second-color sm:text-sm text-xs font-medium hover:bg-inherit p-0"
           @click="$emit('changeForm', 'signIn', null)"
         />
       </p>

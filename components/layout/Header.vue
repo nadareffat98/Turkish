@@ -2,8 +2,14 @@
 // 👉 Data
 const auth = useAuthStore();
 const { $confirmDialog }: any = useNuxtApp();
-const selectedLang = ref("English");
-const languages = ref([{ name: "English" }, { name: "Arabic" }]);
+const selectedLang = ref(
+  useCookie("lang").value || "en"
+);
+const languages: any = ref([
+  { name: "English", code: "en" },
+  { name: "العربية", code: "ar" },
+]);
+const { locale, setLanguage } = useLanguage();
 const menuItems = [
   { label: "Home", link: "/" },
   { label: "Products", link: "/products" },
@@ -45,18 +51,24 @@ const logout = () => {
     },
   });
 };
+
+watch(selectedLang, (newLangName) => {
+  if (newLangName && newLangName !== locale.value) {
+    setLanguage(newLangName as "en" | "ar");
+  }
+});
 </script>
 <template>
   <!---------------------------- System bar ------------------------------->
   <div class="system-bar py-1">
-    <p class="text-white sm:text-sm text-xs font-normal">
+    <!-- <p class="text-white sm:text-sm text-xs font-normal">
       Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
-    </p>
+    </p> -->
     <Select
       v-model="selectedLang"
       :options="languages"
       optionLabel="name"
-      option-value="name"
+      option-value="code"
       pt:root:style="background-color: transparent !important; border: none !important;"
       pt:label:class="text-white text-sm"
       pt:dropdown:class="text-white text-sm"
@@ -72,12 +84,16 @@ const logout = () => {
       <template #start>
         <NuxtLink to="/" class="flex sm:gap-2 gap-1 items-center">
           <img alt="logo" src="/logo/coloredLogo.png" class="sm:h-10 h-4" />
-          <img alt="turkish" src="/logo/coloredTurkish.png" class="sm:h-6 h-3" />
+          <img
+            alt="turkish"
+            src="/logo/coloredTurkish.png"
+            class="sm:h-6 h-3"
+          />
         </NuxtLink>
       </template>
       <template #item="{ item }">
         <NuxtLink :to="item.link" class="text-sm font-medium">{{
-          item.label
+          typeof item.label === "string" ? $t(item.label) : ''
         }}</NuxtLink>
       </template>
       <template #end>
@@ -100,7 +116,11 @@ const logout = () => {
             </IconField>
           </template>
         </Inplace>
-        <NuxtLink to="/wishlist" class="header-icons rounded-full" v-if="auth.isAuth">
+        <NuxtLink
+          to="/wishlist"
+          class="header-icons rounded-full"
+          v-if="auth.isAuth"
+        >
           <i class="pi pi-heart" />
         </NuxtLink>
         <NuxtLink to="/shopping-cart" class="header-icons rounded-full">
@@ -128,10 +148,10 @@ const logout = () => {
               custom
             >
               <a v-bind="props.action" :href="href" @click="navigate">
-                {{ item.label }}
+                {{ typeof item.label === "string" ? $t(item.label) : '' }}
               </a>
             </NuxtLink>
-            <a v-else v-bind="props.action">{{ item.label }}</a>
+            <a v-else v-bind="props.action">{{ typeof item.label === "string" ? $t(item.label) : '' }}</a>
           </template>
         </Menu>
       </template>

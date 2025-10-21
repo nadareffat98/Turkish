@@ -50,14 +50,14 @@ const onCodeFormSubmit = async () => {
 <template>
   <AuthCardForm>
     <template #header>
-      <h3 class="text-4xl font-bold text-main-color">Forget password ?</h3>
-      <p class="text-main-color text-center">
+      <h3 class="title-auth">Forget password ?</h3>
+      <p class="text-center subtitle-auth">
         Enter your email to send you a message to recover your password easily.
       </p>
     </template>
     <template #content>
       <form
-        class="form-container flex flex-col gap-4 w-full"
+        class="form-container flex flex-col sm:gap-4 gap-2 w-full"
         v-if="emailFormActive"
       >
         <div class="flex flex-col gap-1">
@@ -80,7 +80,7 @@ const onCodeFormSubmit = async () => {
           @click.prevent="onEmailFormSubmit"
         />
       </form>
-      <form class="form-container flex flex-col gap-4 w-full" v-else>
+      <form class="form-container flex flex-col sm:gap-4 gap-2 w-full" v-else>
         <div class="flex flex-col gap-1">
           <label>Enter code</label>
           <InputOtp
@@ -103,24 +103,21 @@ const onCodeFormSubmit = async () => {
       </form>
     </template>
     <template #footer>
-      <p
-        class="text-main-color text-sm font-medium mt-2"
-        v-if="emailFormActive"
-      >
+      <p class="footer-auth" v-if="emailFormActive">
         Already have an account?
         <Button
           label="Sign in"
           variant="text"
-          class="text-second-color text-sm font-medium hover:bg-inherit p-0"
+          class="text-second-color sm:text-sm text-xs font-medium hover:bg-inherit p-0"
           @click="$emit('changeForm', 'signIn', null)"
         />
       </p>
-      <p class="text-main-color text-sm font-medium mt-2" v-else>
+      <p class="footer-auth" v-else>
         You didn’t receive any code yet ?
         <Button
           label="Resend it"
           variant="text"
-          class="text-second-color text-sm font-medium hover:bg-inherit p-0"
+          class="text-second-color sm:text-sm text-xs font-medium hover:bg-inherit p-0"
           @click.prevent="onEmailFormSubmit"
         />
       </p>

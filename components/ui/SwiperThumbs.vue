@@ -29,14 +29,10 @@ const setThumbsSwiper = (swiper) => {
     class="main-swiper w-full"
   >
     <swiper-slide v-for="(image, index) in images" :key="index">
-      <Image
-        :src="image.image"
-        width="100%"
-        pt:image:style="height:405px;border-radius:12px"
-      />
+      <img :src="image.image" class="h-[405px] w-auto rounded-xl mx-auto" />
     </swiper-slide>
   </swiper>
-  <div class="thumbs-container relative mt-6 w-full">
+  <div class="thumbs-container relative mt-6 w-full" v-if="images.length > 1">
     <Button
       icon="pi pi-arrow-left"
       variant="text"
@@ -58,11 +54,7 @@ const setThumbsSwiper = (swiper) => {
         :key="index"
         style="height: 85px"
       >
-        <Image
-          :src="image.image"
-          width="100%"
-          pt:image:style="border-radius:12px;height:100%"
-        />
+        <img :src="image.image" class="h-full w-full rounded-lg object-cover" />
       </swiper-slide>
     </swiper>
     <Button

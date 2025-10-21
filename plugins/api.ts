@@ -2,6 +2,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const config = useRuntimeConfig();
   const authStore = useAuthStore();
   const guestToken = await getGuestToken();
+  const lang = useCookie("lang").value || "en";
   const query: Record<string, string> = {};
   if (!authStore.isAuth && guestToken) {
     query.guest_token = guestToken;
@@ -13,7 +14,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       if (authStore.token) {
         options.headers.set("Authorization", `Bearer ${authStore.token}`);
       }
-      options.headers.set("Accept-Language", "en");
+      options.headers.set("Accept-Language", lang);
     },
     async onResponseError({ response }) {
       if (response.status === 401) {
