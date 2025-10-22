@@ -85,5 +85,8 @@ const navigationOptions = ref({
   .p-button-icon {
     @apply sm:text-base text-sm;
   }
+  &:hover{
+    @apply bg-main-color text-white;
+  }
 }
 </style>

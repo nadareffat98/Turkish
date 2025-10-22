@@ -140,7 +140,10 @@ h3 {
 
 // toast
 .p-toast {
-    // width: 27rem;
+    @apply ltr:left-auto ltr:right-4 rtl:right-auto rtl:left-4;
+    max-width: 90vw;
+    box-sizing: border-box;
+    word-break: break-word;
     .p-toast-message-content {
         align-items: center !important;
         gap: 12px;
