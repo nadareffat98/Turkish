@@ -27,11 +27,11 @@ const storeItems = ref([
   { name: "Contact", link: "/" },
   { name: "FAQs", link: "/" },
 ]);
-const accordionItems = ref([
+const accordionItems = computed(() => [
   {
     id: 1,
-    label: "Product",
-    items: productItems.value,
+    label: "Products",
+    items: productItems.value || [],
   },
   {
     id: 2,
@@ -50,15 +50,19 @@ const accordionItems = ref([
   <div class="footer-container bg-main-color pt-16">
     <div class="top-footer flex justify-between items-start mb-10">
       <!---------------------------------- left side footer ----------------- -->
-      <div class="left-footer-side flex flex-col flex-1 gap-8">
+      <div class="left-footer-side flex flex-col flex-1 lg:gap-8 gap-4">
         <div class="imgs-container flex items-center gap-4">
-          <img alt="logo" src="/logo/logo.png" class="sm:h-16 h-12" />
-          <img alt="turkish" src="/logo/turkish.png" class="sm:h-10 h-6" />
+          <img alt="logo" src="/logo/logo.png" class="lg:h-16 sm:h-14 h-10" />
+          <img
+            alt="turkish"
+            src="/logo/turkish.png"
+            class="lg:h-10 sm:h-8 h-6"
+          />
         </div>
-        <p class="text-white font-normal pr-36 pb-12 sm:text-base text-sm">
-          Exploring a Turkish store can indeed be a gateway to experiencing the
-          beauty and elegance . Bringing Turkish magic to your gifting
-          experience
+        <p
+          class="text-white font-normal ltr:lg:pr-36 rtl:lg:pl-36 lg:pb-12 pb-10 sm:text-base text-sm"
+        >
+          {{ $t("Explore Turkish") }}
         </p>
         <div class="social-footer flex gap-2">
           <Button
@@ -91,7 +95,7 @@ const accordionItems = ref([
       <!--------------------------------------- right side footer  --------------------->
       <div class="right-footer-desk-side flex justify-between flex-1">
         <div class="flex flex-col gap-2">
-          <h3>Product</h3>
+          <h3>{{ $t("Products") }}</h3>
           <NuxtLink
             v-for="Product in productItems"
             :key="Product.name"
@@ -100,21 +104,21 @@ const accordionItems = ref([
           >
         </div>
         <div class="flex flex-col gap-2">
-          <h3>Services</h3>
+          <h3>{{ $t("Services") }}</h3>
           <NuxtLink
             v-for="service in serviceItems"
             :key="service.name"
             :to="service.link"
-            >{{ service.name }}</NuxtLink
+            >{{ $t(service.name) }}</NuxtLink
           >
         </div>
         <div class="flex flex-col gap-2">
-          <h3>Store</h3>
+          <h3>{{ $t("Store") }}</h3>
           <NuxtLink
             v-for="store in storeItems"
             :key="store.name"
             :to="store.link"
-            >{{ store.name }}</NuxtLink
+            >{{ $t(store.name) }}</NuxtLink
           >
         </div>
       </div>
@@ -136,7 +140,7 @@ const accordionItems = ref([
               pt:toggleicon:class="text-white"
             >
               <h3>
-                {{ item.label }}
+                {{ $t(item.label) }}
               </h3>
             </AccordionHeader>
             <AccordionContent pt:content:class="bg-inherit">
@@ -145,7 +149,9 @@ const accordionItems = ref([
                   v-for="link in item.items"
                   :key="link.name"
                   :to="link.link"
-                  >{{ link.name }}</NuxtLink
+                  >{{
+                    item.label === "Products" ? link.name : $t(link.name)
+                  }}</NuxtLink
                 >
               </div>
             </AccordionContent>
@@ -153,14 +159,43 @@ const accordionItems = ref([
         </Accordion>
       </div>
     </div>
-    <div class="bottom-footer flex justify-between items-start mb-8">
+    <div
+      class="bottom-footer flex justify-between items-start mb-8 lg:gap-8 gap-4"
+    >
+      <div class="social-footer gap-2">
+        <Button
+          icon="pi pi-twitter"
+          variant="text"
+          rounded
+          class="bg-white text-main-color"
+        />
+        <Button
+          variant="text"
+          rounded
+          class="bg-white text-main-color p-button-icon-only"
+        >
+          <font-awesome icon="fa-brands fa-facebook-f" />
+        </Button>
+        <Button
+          icon="pi pi-tiktok"
+          variant="text"
+          rounded
+          class="bg-white text-main-color"
+        />
+        <Button
+          icon="pi pi-instagram"
+          variant="text"
+          rounded
+          class="bg-white text-main-color"
+        />
+      </div>
       <p class="text-white text-xs font-normal">
-        Copyright © 2023 TURKISH - All rights reserved
+        {{ $t("Copyright") }}
       </p>
       <div class="footer-links flex gap-4">
-        <NuxtLink to="/">Terms And Conditions</NuxtLink>
-        <NuxtLink to="/">privacy Policy</NuxtLink
-        ><NuxtLink to="/">Returns</NuxtLink><NuxtLink to="/">Cookies</NuxtLink>
+        <NuxtLink to="/">{{ $t("Terms & Conditions") }}</NuxtLink>
+        <NuxtLink to="/">{{ $t("privacy Policy") }}</NuxtLink
+        ><NuxtLink to="/">{{ $t("Returns") }}</NuxtLink>
       </div>
     </div>
   </div>

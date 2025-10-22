@@ -76,8 +76,8 @@ onMounted(async () => {
       <LazySwiper
         v-if="isSection1Visible"
         type="category"
-        title="Categories"
-        sub-title="Browse By Category"
+        :title="$t('Categories')"
+        :sub-title="$t('Browse By Category')"
         swiperEndpoint="categories"
       />
       <SkeletonSwiper v-else />
@@ -88,8 +88,8 @@ onMounted(async () => {
       <LazySwiper
         v-if="isSection2Visible"
         type="product"
-        title="This Month"
-        sub-title="Best Selling Products"
+        :title="$t('This Month')"
+        :sub-title="$t('Best Selling Products')"
         swiperEndpoint="best_selling"
       />
       <SkeletonSwiper v-else />
@@ -100,8 +100,8 @@ onMounted(async () => {
       <LazySwiper
         v-if="isSection3Visible"
         type="product"
-        title="Today’s"
-        sub-title="Flash Sales"
+        :title="$t('Today’s')"
+        :sub-title="$t('Flash Sales')"
         banner-endpoint="flower_banners"
         swiperEndpoint="flash_sales"
       />
@@ -111,8 +111,8 @@ onMounted(async () => {
     <div ref="section4Ref" class="section">
       <lazyGrid
         v-if="isSection4Visible"
-        title="Our Products"
-        sub-title="Explore Our Products"
+        :title="$t('Our Products')"
+        :sub-title="$t('Explore Our Products')"
         banner-endpoint="custom_build_banner"
         grid-endpoint="our_products"
         link-to="/products"
@@ -123,8 +123,8 @@ onMounted(async () => {
     <div ref="section5Ref" class="section">
       <lazyGrid
         v-if="isSection5Visible"
-        title="Today’s"
-        sub-title="New collection"
+        :title="$t('Today’s')"
+        :sub-title="$t('New collection')"
         banner-endpoint="seeking_unavailable_banner"
         grid-endpoint="new_collection"
         link-to="/products?sort=best_seller"

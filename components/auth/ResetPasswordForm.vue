@@ -33,19 +33,19 @@ const onSubmit = handleSubmit(async (values: any) => {
 <template>
   <AuthCardForm>
     <template #header>
-      <h3 class="title-auth">Reset your password</h3>
+      <h3 class="title-auth">{{ $t("Reset your password") }}</h3>
     </template>
     <template #content>
       <form
-        @submit="onSubmit"
+        @submit.prevent="onSubmit"
         class="flex flex-col sm:gap-4 gap-2 w-full form-container"
       >
-        <div class="flex flex-col gap-1">
-          <label>Password</label>
+        <div class="input-container">
+          <label>{{ $t("Password") }}</label>
           <Password
             v-model="password"
             type="text"
-            placeholder="Enter Your password"
+            :placeholder="$t('Enter Your password')"
             :feedback="false"
             toggleMask
             fluid
@@ -54,15 +54,15 @@ const onSubmit = handleSubmit(async (values: any) => {
             :invalid="errors.password ? true : false"
           />
           <small id="password-help" class="text-red-500">
-            {{ errors.password }}
+            {{ errors.password ? $t(errors.password) : "" }}
           </small>
         </div>
-        <div class="flex flex-col gap-1">
-          <label>Confirm password</label>
+        <div class="input-container">
+          <label>{{ $t("Confirm password") }}</label>
           <Password
             type="text"
             v-model="passwordConfirmation"
-            placeholder="Confirm your password"
+            :placeholder="$t('Confirm password')"
             :feedback="false"
             toggleMask
             fluid
@@ -71,21 +71,25 @@ const onSubmit = handleSubmit(async (values: any) => {
             :invalid="errors.password_confirmation ? true : false"
           />
           <small id="password_confirmation-help" class="text-red-500">
-            {{ errors.password_confirmation }}
+            {{
+              errors.password_confirmation
+                ? $t(errors.password_confirmation)
+                : ""
+            }}
           </small>
         </div>
         <UiButtonComponent
           type="submit"
           class="auth-button"
-          content="Reset my password"
+          :content="$t('Reset my password')"
         />
       </form>
     </template>
     <template #footer>
       <p class="footer-auth">
-        Already have an account?
+        {{ $t("Already have an account?") }}
         <Button
-          label="Sign in"
+          :label="$t('Sign in')"
           variant="text"
           class="text-second-color sm:text-sm text-xs font-medium hover:bg-inherit p-0"
           @click="$emit('changeForm', 'signIn', null)"

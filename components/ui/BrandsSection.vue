@@ -7,7 +7,7 @@ brandImgs.value = data.data;
 </script>
 <template>
   <div
-    class="body-content brand-imgs-container flex items-center justify-center flex-wrap sm:gap-6 gap-3 lg:mt-16 sm:mt-10 mt-6"
+    class="body-content brand-imgs-container flex items-center justify-center flex-wrap sm:gap-x-6 gap-x-3 gap-y-2 lg:mt-16 sm:mt-10 mt-6"
     v-if="brandImgs"
   >
     <img

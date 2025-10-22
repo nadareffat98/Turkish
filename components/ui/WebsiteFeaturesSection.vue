@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // 👉 Data
-const { $api } = useNuxtApp();
+const { $api }: any = useNuxtApp();
 const { data: websiteFeatures }: any = await useAsyncData(
   "website_features",
   () => $api("website_features")
@@ -11,13 +11,17 @@ const { data: websiteFeatures }: any = await useAsyncData(
     class="body-content website-features-container sm:my-12 my-6"
     v-if="websiteFeatures"
   >
-    <div class="border border-border-color rounded-md grid grid-cols-12 sm:gap-6 gap-y-4 gap-x-2 sm:p-4 p-2">
+    <div
+      class="border border-border-color rounded-md grid grid-cols-12 sm:gap-6 gap-y-4 gap-x-2 sm:p-4 p-2"
+    >
       <div
         v-for="(item, index) in websiteFeatures.data"
         :key="item.id"
         class="lg:col-span-3 col-span-6 flex justify-between"
       >
-        <div class="flex sm:flex-row flex-col sm:justify-center sm:items-center sm:gap-4">
+        <div
+          class="flex sm:flex-row flex-col sm:justify-center sm:items-center sm:gap-4"
+        >
           <img :src="item.image" class="w-8 h-8" />
           <div class="flex flex-col gap-1">
             <p class="text-main-color sm:text-base text-sm font-medium">

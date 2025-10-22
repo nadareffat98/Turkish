@@ -27,36 +27,34 @@ const onSubmit = handleSubmit(async (values: any) => {
 <template>
   <AuthCardForm>
     <template #header>
-      <p class="subtitle-auth">Welcome back!</p>
-      <h3 class="title-auth">
-        Sign in to your account
-      </h3>
+      <p class="subtitle-auth">{{ $t("Welcome back!") }}</p>
+      <h3 class="title-auth">{{ $t("Sign in to your account") }}</h3>
     </template>
     <template #content>
       <form
         @submit="onSubmit"
         class="flex flex-col sm:gap-4 gap-2 w-full form-container"
       >
-        <div class="flex flex-col gap-1">
-          <label>Email Address*</label>
+        <div class="input-container">
+          <label>{{ $t("Email Address") }} *</label>
           <InputText
             v-model="email"
             type="text"
-            placeholder="Enter Your email"
+            :placeholder="$t('Enter Your email')"
             fluid
             aria-describedby="email-help"
             :class="{ 'p-invalid': errors.email }"
           />
           <small id="email-help" class="text-red-500">
-            {{ errors.email }}
+            {{ $t(errors.email || "") }}
           </small>
         </div>
-        <div class="flex flex-col gap-1">
-          <label>Password*</label>
+        <div class="input-container">
+          <label>{{ $t("Password") }} *</label>
           <Password
             v-model="password"
             type="text"
-            placeholder="Enter Your password"
+            :placeholder="$t('Enter Your password')"
             :feedback="false"
             toggleMask
             fluid
@@ -65,12 +63,12 @@ const onSubmit = handleSubmit(async (values: any) => {
             :invalid="errors.password ? true : false"
           />
           <small id="password-help" class="text-red-500">
-            {{ errors.password }}
+            {{ $t(errors.password || "") }}
           </small>
         </div>
         <div class="flex justify-end">
           <Button
-            label="Forget password ?"
+            :label="$t('Forget password ?')"
             variant="text"
             class="text-second-color sm:text-sm text-xs font-normal hover:bg-inherit p-0"
             @click="$emit('changeForm', 'forgetPassword', null)"
@@ -79,15 +77,15 @@ const onSubmit = handleSubmit(async (values: any) => {
         <UiButtonComponent
           type="submit"
           class="auth-button"
-          content="Sign in"
+          :content="$t('Sign in')"
         />
       </form>
     </template>
     <template #footer>
       <p class="footer-auth">
-        Don’t have an account ?
+        {{ $t("Don’t have an account ?") }}
         <NuxtLink class="text-second-color" to="/auth/sign-up">
-          Sign up</NuxtLink
+          {{ $t("Sign up") }}</NuxtLink
         >
       </p>
     </template>

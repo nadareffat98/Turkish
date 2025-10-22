@@ -74,6 +74,7 @@ export default defineNuxtConfig({
           "El Messiri": {
             wght: "200..600",
           },
+          Cairo: [400, 500, 600, 700],
         },
         display: "swap",
       },

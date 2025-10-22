@@ -32,23 +32,26 @@ const props = defineProps({
         </div>
       </template>
     </DataView>
-    <UiButtonComponent label="View All Collection" v-if="items" @click="navigateTo(linkTo)" />
+    <UiButtonComponent
+      :label="$t('View All Collection')"
+      v-if="items"
+      @click="navigateTo(linkTo)"
+    />
   </div>
 </template>
 <style scoped lang="scss">
 .title-container {
-  padding-left: 18px;
+  @apply sm:ltr:pl-7 sm:rtl:pr-7 sm:text-base text-sm ltr:pl-[18px] rtl:pr-[18px];
   color: $second-color;
-  font-size: 14px;
   font-weight: 700;
   &::before {
+    @apply ltr:left-0 rtl:right-0;
     content: "";
     background: $second-color;
     position: absolute;
     border-radius: 4px;
     width: 9px;
     height: 29px;
-    left: 0;
     top: 50%;
     transform: translateY(-50%);
   }
@@ -57,8 +60,6 @@ const props = defineProps({
       width: 16px;
       height: 36px;
     }
-    font-size: 16px;
-    padding-left: 28px;
   }
 }
 </style>

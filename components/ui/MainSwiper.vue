@@ -15,9 +15,7 @@ const navigationOptions = ref({
 });
 </script>
 <template>
-  <div
-    class="main-swiper-container flex flex-col gap-5 lg:py-16 sm:py-10 py-4"
-  >
+  <div class="main-swiper-container flex flex-col gap-5 lg:py-16 sm:py-10 py-4">
     <div class="relative">
       <p class="title-container">
         {{ title }}
@@ -33,14 +31,14 @@ const navigationOptions = ref({
           variant="text"
           rounded
           :class="'custom-' + className + '-prev'"
-          class="swiper-buttons"
+          class="swiper-buttons rtl:scale-x-[-1]"
         />
         <Button
           icon="pi pi-arrow-right"
           variant="text"
           rounded
           :class="'custom-' + className + '-next'"
-          class="swiper-buttons"
+          class="swiper-buttons rtl:scale-x-[-1]"
         />
       </div>
     </div>
@@ -61,18 +59,17 @@ const navigationOptions = ref({
 </template>
 <style scoped lang="scss">
 .title-container {
-  padding-left: 18px;
+  @apply sm:ltr:pl-7 sm:rtl:pr-7 sm:text-base text-sm ltr:pl-[18px] rtl:pr-[18px];
   color: $second-color;
-  font-size: 14px;
   font-weight: 700;
   &::before {
+    @apply ltr:left-0 rtl:right-0;
     content: "";
     background: $second-color;
     position: absolute;
     border-radius: 4px;
     width: 9px;
     height: 29px;
-    left: 0;
     top: 50%;
     transform: translateY(-50%);
   }
@@ -81,8 +78,6 @@ const navigationOptions = ref({
       width: 16px;
       height: 36px;
     }
-    font-size: 16px;
-    padding-left: 28px;
   }
 }
 .swiper-buttons {

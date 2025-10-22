@@ -11,7 +11,7 @@ const { $toast }: any = useNuxtApp();
 
 const onEmailFormSubmit = async () => {
   if (!email.value) {
-    errors.value = { email: { message: "email is required." } };
+    errors.value = { email: { message: "email is required" } };
     return;
   } else {
     isLoading.value = true;
@@ -20,7 +20,10 @@ const onEmailFormSubmit = async () => {
     });
     if (res.status == "fail") {
       $toast(res.message, "error");
-    } else emailFormActive.value = false;
+    } else {
+      emailFormActive.value = false;
+      await focusOtp();
+    }
     isLoading.value = false;
   }
 };
@@ -41,43 +44,55 @@ const onCodeFormSubmit = async () => {
     isLoading.value = false;
   }
 };
+const focusOtp = async () => {
+  await nextTick();
+  const otpInput = document.querySelector<HTMLInputElement>(
+    ".otp-container input"
+  );
+  otpInput?.focus();
+};
 </script>
 <template>
   <AuthCardForm>
     <template #header>
-      <h3 class="title-auth">Verify email</h3>
+      <h3 class="title-auth">{{ $t("Verify email") }}</h3>
       <p class="subtitle-auth text-center">
-        Enter your email to send you a message to verify your email
+        {{ $t("Enter your email to send you a message to verify your email") }}
       </p>
     </template>
     <template #content>
       <form
         class="form-container flex flex-col sm:gap-4 gap-2 w-full"
+        @submit.prevent="onEmailFormSubmit"
         v-if="emailFormActive"
       >
-        <div class="flex flex-col gap-1">
-          <label>Email Address*</label>
+        <div class="input-container">
+          <label>{{ $t("Email Address") }} *</label>
           <InputText
             v-model="email"
             type="text"
-            placeholder="Enter Your email"
+            :placeholder="$t('Enter Your email')"
             fluid
             :invalid="errors.email?.message"
             @input="errors.email = {}"
           />
-          <small class="text-red-500" v-if="errors.email">
-            {{ errors.email?.message }}
+          <small class="text-red-500" v-if="errors?.email?.message">
+            {{ $t(errors.email?.message) }}
           </small>
         </div>
         <UiButtonComponent
           class="auth-button"
-          content="Send code"
-          @click.prevent="onEmailFormSubmit"
+          :content="$t('Send code')"
+          type="submit"
         />
       </form>
-      <form class="form-container flex flex-col sm:gap-4 gap-2 w-full" v-else>
-        <div class="flex flex-col gap-1">
-          <label>Enter code</label>
+      <form
+        class="form-container flex flex-col sm:gap-4 gap-2 w-full"
+        @submit.prevent="onCodeFormSubmit"
+        v-else
+      >
+        <div class="input-container">
+          <label>{{ $t("Enter code") }}</label>
           <InputOtp
             v-model="code"
             size="large"
@@ -86,34 +101,31 @@ const onCodeFormSubmit = async () => {
             :invalid="errors.code?.message"
             @input="errors.code = {}"
           />
-          <small class="text-red-500" v-if="errors.code">
-            {{ errors.code?.message }}
+          <small class="text-red-500" v-if="errors?.code?.message">
+            {{ $t(errors.code?.message) }}
           </small>
         </div>
         <UiButtonComponent
           class="auth-button"
-          content="Verify email"
-          @click.prevent="onCodeFormSubmit"
+          :content="$t('Verify email')"
+          type="submit"
         />
       </form>
     </template>
     <template #footer>
-      <p
-        class="footer-auth"
-        v-if="emailFormActive"
-      >
-        Already have an account?
+      <p class="footer-auth" v-if="emailFormActive">
+        {{ $t("Already have an account?") }}
         <Button
-          label="Sign in"
+          :label="$t('Sign in')"
           variant="text"
           class="text-second-color sm:text-sm text-xs font-medium hover:bg-inherit p-0"
           @click="$emit('changeForm', 'signIn', null)"
         />
       </p>
       <p class="text-main-color sm:text-sm text-xs font-medium mt-2" v-else>
-        You didn’t receive any code yet ?
+        {{ $t("You didn’t receive any code yet ?") }}
         <Button
-          label="Resend it"
+          :label="$t('Resend it')"
           variant="text"
           class="text-second-color sm:text-sm text-xs font-medium hover:bg-inherit p-0"
           @click.prevent="onEmailFormSubmit"

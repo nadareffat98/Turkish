@@ -4,26 +4,26 @@ export default defineNuxtPlugin(() => {
   // Define your Yup validation schema globally
   // schema for sign up
   const signUpSchema = Yup.object({
-    first_name: Yup.string().required("Please enter your first name."),
-    last_name: Yup.string().required("Please enter your last name."),
-    email: Yup.string().required("Please enter your email."),
-    phone: Yup.string().required("Please enter your phone."),
-    address: Yup.string().required("Please enter your address."),
-    password: Yup.string().required("Please enter your password."),
+    first_name: Yup.string().required("first name is required"),
+    last_name: Yup.string().required("last name is required"),
+    email: Yup.string().required("email is required"),
+    phone: Yup.string().required("phone is required"),
+    address: Yup.string().required("address is required"),
+    password: Yup.string().required("password is required"),
     password_confirmation: Yup.string()
-      .required("Please confirm your password.")
+      .required("confirm password is required")
       .oneOf([Yup.ref("password")], "your passwords are not identical"),
   });
   // schema for sign in
   const signInSchema = Yup.object({
-    email: Yup.string().required("Please enter your email."),
-    password: Yup.string().required("Please enter your password."),
+    email: Yup.string().required("email is required"),
+    password: Yup.string().required("password is required"),
   });
   // schema for reset password
   const resetPasswordSchema = Yup.object({
-    password: Yup.string().required("Please enter your password."),
+    password: Yup.string().required("password is required"),
     password_confirmation: Yup.string()
-      .required("Please confirm your password.")
+      .required("confirm password is required")
       .oneOf([Yup.ref("password")], "your passwords are not identical"),
   });
   // schema for partner us
@@ -43,7 +43,7 @@ export default defineNuxtPlugin(() => {
   const unavailableProductSchema = Yup.object({
     first_name: Yup.string().required("Please enter your first name."),
     last_name: Yup.string().required("Please enter your last name."),
-    email: Yup.string().required("Please enter your email."),
+    email: Yup.string().required("email is required"),
     phone: Yup.string().required("Please enter your phone."),
     category_id: Yup.string().required("Please enter your category."),
     product_name: Yup.string().required("Please enter your product name."),

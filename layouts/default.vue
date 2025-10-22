@@ -4,7 +4,7 @@ const bodyClass = ref();
 watch(
   () => route.path,
   (newPath) => {
-    if (newPath == "/") bodyClass.value = "pb-20";
+    if (newPath == "/") bodyClass.value = "lg:pb-20 pb-16";
     else bodyClass.value = "body-content lg:py-20 py-10";
   },
   { immediate: true }

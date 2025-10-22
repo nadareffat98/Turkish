@@ -6,7 +6,6 @@ useHead({
 </script>
 <template>
   <div>
-    <Toast successIcon="pi pi-check-circle" />
     <NuxtRouteAnnouncer />
     <UiCustomConfirmDialog></UiCustomConfirmDialog>
     <UiLoadingBlock :blocked="isLoading" />
@@ -16,6 +15,7 @@ useHead({
       errorColor="red"
     />
     <NuxtLayout>
+      <Toast successIcon="pi pi-check-circle" />
       <NuxtPage />
     </NuxtLayout>
   </div>

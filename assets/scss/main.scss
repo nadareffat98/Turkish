@@ -1,5 +1,8 @@
-*:not(i):not(span) {
-    font-family: $main-font;
+body[dir="ltr"] {
+    font-family: "Montserrat", sans-serif;
+}
+body[dir="rtl"] {
+    font-family: "Cairo", sans-serif;
 }
 body {
     padding: 0;
@@ -53,7 +56,8 @@ p {
                 background-color: lighten($main-color, 50%) !important ;
             }
             .p-menu-item-link {
-                font: $global-font;
+                font-size: 14px;
+                font-weight: 500;
                 color: $main-color;
             }
         }
@@ -119,6 +123,7 @@ p {
 h3 {
     font-family: "El Messiri" !important;
 }
+
 // confirm dialog
 .p-confirmdialog {
     width: 50%;

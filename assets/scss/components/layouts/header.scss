@@ -2,12 +2,8 @@
     background-color: $main-color;
     display: flex;
     flex-direction: column;
-    p {
-        font-family: $main-font;
-    }
-    @media (min-width:640px)
-    {
-        justify-content: space-between;
+    @media (min-width: 640px) {
+        justify-content: end;
         align-items: center;
         flex-direction: row;
     }
@@ -35,7 +31,7 @@
         }
     }
     .p-menubar-end {
-        @apply ltr:ml-0 rtl:mr-0 !important;
+        @apply mr-0 ml-0 !important;
         display: flex;
         .p-button,
         .header-icons {
@@ -78,8 +74,7 @@
         }
         .p-menubar-end {
             order: 3;
-            margin-left: auto;
-
+            @apply ltr:ml-auto rtl:mr-auto !important;
         }
     }
 }

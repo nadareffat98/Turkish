@@ -32,21 +32,25 @@
     }
     .p-inputgroup {
         .p-inputgroupaddon {
-            border-top-right-radius: 0 !important;
-            border-bottom-right-radius: 0 !important;
+            @apply ltr:rounded-tr-none ltr:rounded-br-none rtl:rounded-tl-none rtl:rounded-bl-none !important;
             &.p-invalid {
                 border-color: coral !important;
             }
+            :dir(rtl) & {
+                border-right-width: 1px !important;
+            }
         }
         .p-inputtext {
-            border-top-left-radius: 0 !important;
-            border-bottom-left-radius: 0 !important;
+            @apply ltr:rounded-tl-none ltr:rounded-bl-none rtl:rounded-tr-none rtl:rounded-br-none !important;
         }
     }
     .otp-container {
         .p-inputtext {
             flex: 1;
             aspect-ratio: 10/9;
+            &:enabled:focus {
+                border-color: $second-color !important;
+            }
         }
     }
     .checkbox-container {
@@ -74,4 +78,8 @@
             font-size: 18px;
         }
     }
+}
+
+:deep(.input-container) {
+    @apply flex flex-col gap-2;
 }
