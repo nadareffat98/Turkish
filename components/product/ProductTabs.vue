@@ -13,7 +13,7 @@ const tabs = ref([
     content: props.product.gift_sevice,
     value: "2",
   },
-  { title: "Review", value: "3" },
+  { title: "Reviews", value: "3" },
 ]);
 </script>
 
@@ -24,23 +24,28 @@ const tabs = ref([
         v-for="tab in tabs"
         :key="tab.title"
         :value="tab.value"
-        pt:root:class="text-sm font-medium text-font-color"
-        >{{ tab.title }}</Tab
+        pt:root:class="sm:text-sm text-xs font-medium text-font-color"
+        >{{ $t(tab.title) }}</Tab
       >
     </TabList>
-    <TabPanels pt:root:class="pt-6">
+    <TabPanels pt:root:class="lg:p-7 sm:p-4 p-2">
       <TabPanel
         v-for="tab in tabs"
         :key="tab.content"
         :value="tab.value"
-        pt:root:class="text-sm font-normal text-font-color"
+        pt:root:class="sm:text-sm text-xs font-normal text-font-color"
       >
-        <ProductReviews
-          v-if="tab.title === 'Review'"
-          :product="product"
-        />
+        <ProductReviews v-if="tab.title === 'Reviews'" :product="product" />
         <p class="m-0" v-else>{{ tab.content }}</p>
       </TabPanel>
     </TabPanels>
   </Tabs>
 </template>
+<style scoped lang="scss">
+:deep(.p-tablist) {
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    height: 0px !important;
+  }
+}
+</style>

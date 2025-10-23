@@ -40,26 +40,31 @@ const rates = computed(() => {
     },
   ];
 });
+console.log(props.product);
 </script>
 <template>
-  <div class="reviews-container p-10 flex flex-col gap-10">
-    <div class="rate-container flex gap-8">
-      <div
-        class="flex flex-col basis-auto items-center justify-center gap-3 p-8 bg-[#FBFBFB] rounded"
-      >
-        <h3 class="font-bold text-6xl text-black">{{ product.avg_rate }}</h3>
+  <div
+    class="reviews-container lg:p-10 sm:p-6 p-3 flex flex-col lg:gap-10 sm:gap-6 gap-3"
+  >
+    <div class="rate-container">
+      <div class="feedback-side">
+        <h3 class="font-bold lg:text-6xl sm:text-4xl text-xl text-black">
+          {{ product.avg_rate }}
+        </h3>
         <Rating
           v-model="product.avg_rate"
           :readonly="true"
           pt:onicon:style="color:#FBBC05"
           pt:officon:style="color:#FBBC05"
         />
-        <p class="text-base font-semibold text-black text-center">
-          Customer Rating
+        <p
+          class="lg:text-base sm:text-sm text-xs font-semibold text-black text-center"
+        >
+          {{ $t("Customers Rating") }}
           <span class="text-main-color"> ({{ NumberOfRatings }})</span>
         </p>
       </div>
-      <div class="rate-detailes flex flex-col gap-6 basis-7/12">
+      <div class="rate-detailes">
         <div
           class="individual-rate flex items-center gap-4"
           v-for="rate in rates"
@@ -77,16 +82,29 @@ const rates = computed(() => {
             :showValue="false"
             pt:value:class="bg-[#FBBC05]"
           ></ProgressBar>
-          <p class="font-medium text-sm text-black flex gap-1">
+          <p class="font-medium sm:text-sm text-xs text-black flex gap-1">
             {{ rate.progress }}%
-            <span class="font-normal text-font-color" v-if="rate.value > 0">( {{ rate.value }} )</span>
+            <span class="font-normal text-font-color" v-if="rate.value > 0"
+              >( {{ rate.value }} )</span
+            >
           </p>
         </div>
       </div>
     </div>
     <ProductCustomerFeedback v-if="product.reviews.length > 0" />
     <p v-else class="text-base font-semibold text-black text-center">
-      No Reviews Found
+      {{ $t("No reviews yet") }}
     </p>
   </div>
 </template>
+<style scoped lang="scss">
+.rate-container {
+  @apply flex sm:flex-row flex-col lg:gap-8 gap-4;
+}
+.feedback-side {
+  @apply flex flex-col sm:basis-auto items-center justify-center gap-3 lg:p-8 p-5 bg-[#FBFBFB] rounded flex-shrink-0 mx-auto;
+}
+.rate-detailes {
+  @apply flex flex-col lg:gap-6 gap-3 lg:basis-7/12 sm:basis-9/12 basis-full;
+}
+</style>

@@ -10,6 +10,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       severity,
       summary: message,
       life: options.life || 5000,
+      closable:false,
     });
   };
 

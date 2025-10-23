@@ -143,7 +143,6 @@ h3 {
     @apply ltr:left-auto ltr:right-4 rtl:right-auto rtl:left-4;
     max-width: 90vw;
     box-sizing: border-box;
-    word-break: break-word;
     .p-toast-message-content {
         align-items: center !important;
         gap: 12px;
@@ -180,5 +179,13 @@ h3 {
     .body-content,
     .footer-container {
         padding: 0 2rem;
+    }
+}
+@media (max-width: 640px) {
+    .system-bar,
+    .header-container,
+    .body-content,
+    .footer-container {
+        padding: 0 1.5rem;
     }
 }

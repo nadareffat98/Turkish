@@ -29,7 +29,7 @@ const setThumbsSwiper = (swiper) => {
     class="main-swiper w-full"
   >
     <swiper-slide v-for="(image, index) in images" :key="index">
-      <img :src="image.image" class="h-[405px] w-auto rounded-xl mx-auto" />
+      <img :src="image.image" class="h-auto w-full rounded-xl mx-auto" />
     </swiper-slide>
   </swiper>
   <div class="thumbs-container relative mt-6 w-full" v-if="images.length > 1">
