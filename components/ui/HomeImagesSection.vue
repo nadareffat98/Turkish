@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // 👉 Data
-const { $api }: any = useNuxtApp();
+const $api = useApi(); 
 const homeImagesData: any = ref(null);
 const data: any = await $api("home_images");
 homeImagesData.value = data.data;

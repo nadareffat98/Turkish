@@ -1,6 +1,6 @@
 <script setup>
 // 👉 Data
-const { $api } = useNuxtApp();
+const $api = useApi();
 const config = useRuntimeConfig();
 const route = useRoute();
 // 👉 Fetch

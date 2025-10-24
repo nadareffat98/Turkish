@@ -3,7 +3,8 @@
 const globalStore = useGlobalStore();
 const countries = globalStore.countries;
 const cities = ref([]);
-const { $partnerUsSchema, $confirmDialog, $api, $toast } = useNuxtApp();
+const $api = useApi();
+const { $partnerUsSchema, $confirmDialog, $toast } = useNuxtApp();
 const router = useRouter();
 const { defineField, handleSubmit, errors } = useForm({
   validationSchema: $partnerUsSchema,
@@ -26,25 +27,29 @@ const tiktokAccount = ref("");
 // 👉 Methods
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true;
-  const res = await $api("partners", {
-    method: "POST",
-    body: {
-      phone_code: phone_code.value.phone_code,
-      country_id: phone_code.value.id,
-      ...values,
-    },
-    ignoreResponseError: true,
-  });
-  if (res.status == "fail") $toast(res.message, "error");
-  else fireConfirm();
-  isLoading.value = false;
+  try {
+    await $api("partners", {
+      method: "POST",
+      body: {
+        phone_code: phone_code.value.phone_code,
+        country_id: phone_code.value.id,
+        ...values,
+      },
+    });
+    fireConfirm();
+  } catch (e) {
+    $toast(e.data.message, "error");
+  } finally {
+    isLoading.value = false;
+  }
+  // if (res.status == "fail") $toast(res.message, "error");
 });
 const fireConfirm = () => {
   $confirmDialog({
     icon: "fa-regular fa-circle-check",
     header: "Message Received",
     message:
-      " Your message has been received so expect a prompt response from our team soon",
+      "Your message has been received so expect a prompt response from our team soon",
     acceptClass: "hidden",
     rejectClass: "flex-none mx-auto",
     rejectLabel: "Back to home",
@@ -64,19 +69,22 @@ onMounted(async () => {
 </script>
 <template>
   <Card
-    class="px-10 mx-auto"
-    style="width: 590px"
+    class="sm:px-10 mx-auto sm:w-[590px] w-full"
     pt:root:class="shadow-none border-none"
     pt:header:class="flex flex-col items-start gap-2"
-    pt:body:class="pt-6 px-0"
+    pt:body:class="sm:pt-6 pt-3 px-0"
     pt:footer:class="mt-6"
   >
     <template #header>
-      <h3 class="text-4xl font-bold text-main-color">Be a Partner with us</h3>
-      <p class="text-main-color text-base font-medium">
-        Do you have an amazing brand? expose your product with Turkish and
-        contact us now. Please provide us with your info and we will contact you
-        to discuss more!
+      <h3 class="sm:text-4xl text-2xl font-bold text-main-color">
+        {{ $t("Be a Partner with us") }}
+      </h3>
+      <p class="text-main-color sm:text-base text-sm font-medium">
+        {{
+          $t(
+            "Do you have an amazing brand? expose your product with Turkish and contact us now. Please provide us with your info and we will contact you to discuss more!"
+          )
+        }}
       </p>
     </template>
     <template #content>
@@ -84,68 +92,80 @@ onMounted(async () => {
         @submit="onSubmit"
         class="flex flex-col gap-4 w-full form-container"
       >
-        <div class="flex flex-col gap-1">
-          <label>Brand name*</label>
+        <!-- Brand name  -->
+        <div class="inner-container">
+          <label>{{ $t("Brand name") }} *</label>
           <InputText
             v-model="brandName"
-            placeholder="Enter Your brand name"
+            :placeholder="$t('Enter Your brand name')"
             aria-describedby="brand_name-help"
             :class="{ 'p-invalid': errors.brand_name }"
           />
-          <small id="brand_name-help" class="text-red-500">
-            {{ errors.brand_name }}
+          <small
+            id="brand_name-help"
+            class="text-red-500"
+            v-if="errors?.brand_name"
+          >
+            {{ $t(errors.brand_name) }}
           </small>
         </div>
-        <div class="flex flex-col gap-1">
-          <label>City*</label>
+        <!-- City  -->
+        <div class="inner-container">
+          <label>{{ $t("City") }} *</label>
           <Select
             v-model="city"
             :options="cities"
             optionLabel="name"
             option-value="id"
-            placeholder="Select city"
+            :placeholder="$t('Select City')"
             aria-describedby="city_id-help"
             :class="{ 'p-invalid': errors.city_id, 'w-full': true }"
           />
-          <small id="city_id-help" class="text-red-500">
-            {{ errors.city_id }}
+          <small id="city_id-help" class="text-red-500" v-if="errors?.city_id">
+            {{ $t(errors.city_id) }}
           </small>
         </div>
-        <div class="flex flex-col gap-1">
-          <label>Address*</label>
+        <!-- Address -->
+        <div class="inner-container">
+          <label>{{ $t("Address") }} *</label>
           <inputText
             v-model="address"
             type="text"
-            placeholder="Enter Your address"
+            :placeholder="$t('Enter Your address')"
             fluid
             aria-describedby="address-help"
             :class="{ 'p-invalid': errors.address, 'w-full': true }"
           />
-          <small id="address-help" class="text-red-500">
-            {{ errors.address }}
+          <small id="address-help" class="text-red-500" v-if="errors.address">
+            {{ $t(errors.address) }}
           </small>
         </div>
-        <div class="flex flex-col gap-1">
-          <label>Business Email*</label>
+        <!-- Business Email -->
+        <div class="inner-container">
+          <label>{{ $t("Business Email") }} *</label>
           <InputText
             v-model="businessEmail"
             type="text"
-            placeholder="Enter Your business email"
+            :placeholder="$t('Enter Your business email')"
             fluid
             aria-describedby="business_email-help"
             :class="{ 'p-invalid': errors.business_email, 'w-full': true }"
           />
-          <small id="business_email-help" class="text-red-500">{{
-            errors.business_email
-          }}</small>
+          <small
+            id="business_email-help"
+            class="text-red-500"
+            v-if="errors.business_email"
+            >{{ $t(errors.business_email) }}</small
+          >
         </div>
         <!----------------------- Social Info ------------------------------>
-        <p class="text-lg font-semibold text-main-color">
-          Social media Account
+        <p class="sm:text-lg text-base font-semibold text-main-color">
+          {{ $t("Social media Account") }}
         </p>
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label
-            >Facebook <span class="text-font-color">(optional)</span></label
+            >Facebook
+            <span class="text-font-color">({{ $t("optional") }})</span></label
           >
           <div class="relative">
             <InputText
@@ -161,9 +181,10 @@ onMounted(async () => {
             />
           </div>
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label
-            >instagram <span class="text-font-color">(optional)</span></label
+            >instagram
+            <span class="text-font-color">({{ $t("optional") }})</span></label
           >
           <div class="relative">
             <InputText
@@ -179,8 +200,11 @@ onMounted(async () => {
             />
           </div>
         </div>
-        <div class="flex flex-col gap-1">
-          <label>TikTok <span class="text-font-color">(optional)</span></label>
+        <div class="inner-container">
+          <label
+            >TikTok
+            <span class="text-font-color">({{ $t("optional") }})</span></label
+          >
           <div class="relative">
             <InputText
               v-model="tiktokAccount"
@@ -195,49 +219,72 @@ onMounted(async () => {
             />
           </div>
         </div>
-        <UiFileInput
-          :error="errors.file"
-          label="Upload Product List"
-          accept=".pdf,.doc,.docx,.xls,.xlsx,.csv"
-          file-desc="(PDF , Excel , or word Document )"
-          type="file"
-          model="partners"
-          @update="uploadedFile = $event"
-        />
+        <div class="inner-container">
+          <UiFileInput
+            :error="errors?.file ? $t(errors.file) : ''"
+            :label="$t('Upload Product List')"
+            accept=".pdf,.doc,.docx,.xls,.xlsx,.csv"
+            file-desc="(PDF , Excel , or word Document )"
+            type="file"
+            model="partners"
+            @update="uploadedFile = $event"
+          />
+          <Message
+            size="small"
+            variant="simple"
+            icon="pi pi-exclamation-circle"
+            class="text-main-color text-xs font-normal"
+            >{{
+              $t(
+                "please include SKUs , images , Descriptions , Prices if possible"
+              )
+            }}</Message
+          >
+        </div>
         <!------------------- contact Inf -------------------->
-        <h3 class="text-3xl font-bold text-main-color">Contact info</h3>
-        <div class="flex gap-3">
-          <div class="flex flex-col gap-1">
-            <label>First Name*</label>
+        <h3 class="sm:text-3xl text-xl font-bold text-main-color">
+          {{ $t("Contact info") }}
+        </h3>
+        <!-- First Name & Last Name -->
+        <div class="flex sm:flex-row flex-col gap-3">
+          <div class="inner-container w-full">
+            <label>{{ $t("First Name") }} *</label>
             <InputText
               v-model="firstName"
               type="text"
-              placeholder="Enter Your first name"
+              :placeholder="$t('Enter Your first name')"
               fluid
               aria-describedby="first_name-help"
               :class="{ 'p-invalid': errors.first_name }"
             />
-            <small id="first_name-help" class="text-red-500">{{
-              errors.first_name
-            }}</small>
+            <small
+              id="first_name-help"
+              class="text-red-500"
+              v-if="errors.first_name"
+              >{{ $t(errors.first_name) }}</small
+            >
           </div>
-          <div class="flex flex-col gap-1">
-            <label>Last Name*</label>
+          <div class="inner-container w-full">
+            <label>{{ $t("Last Name") }} *</label>
             <InputText
               v-model="lastName"
               type="text"
-              placeholder="Enter Your last name"
+              :placeholder="$t('Enter Your last name')"
               fluid
               aria-describedby="last_name-help"
               :class="{ 'p-invalid': errors.last_name }"
             />
-            <small id="last_name-help" class="text-red-500">{{
-              errors.last_name
-            }}</small>
+            <small
+              id="last_name-help"
+              class="text-red-500"
+              v-if="errors.last_name"
+              >{{ $t(errors.last_name) }}</small
+            >
           </div>
         </div>
-        <div class="flex flex-col gap-1">
-          <label>Phone number*</label>
+        <!-- Phone number  -->
+        <div class="inner-container">
+          <label>{{ $t("Phone number") }} *</label>
           <InputGroup>
             <InputGroupAddon
               :class="{ 'p-invalid': errors.phone }"
@@ -247,13 +294,13 @@ onMounted(async () => {
                 v-model="phone_code"
                 :options="countries"
                 optionLabel="phone_code"
-                class="border-none pr-0"
+                class="border-none ltr:pr-0 rtl:pl-0"
                 pt:label:class="p-0"
                 pt:dropdownicon:class="text-black"
               />
               <Divider
                 layout="vertical"
-                class="before:border-black ml-0"
+                class="before:border-black ltr:ml-0 rtl:mr-0"
                 style="min-height: 50%"
               />
             </InputGroupAddon>
@@ -261,54 +308,63 @@ onMounted(async () => {
               v-model="phone"
               type="text"
               v-keyfilter.num
-              placeholder="Enter Your phone"
-              class="border-l-0 rounded-xl"
+              :placeholder="$t('Enter Your phone')"
+              class="ltr:border-l-0 rtl:border-r-0 rounded-xl"
               fluid
               aria-describedby="phone-help"
               :class="{ 'p-invalid': errors.phone }"
             />
           </InputGroup>
-          <small id="phone-help" class="text-red-500">{{ errors.phone }}</small>
+          <small id="phone-help" class="text-red-500" v-if="errors.phone">{{
+            $t(errors.phone)
+          }}</small>
         </div>
-        <div class="flex flex-col gap-1">
-          <label>Your Job Title*</label>
+        <!-- Job title  -->
+        <div class="inner-container">
+          <label>{{ $t("Your Job Title") }} *</label>
           <InputText
             v-model="jobTitle"
             type="text"
-            placeholder="Enter Your job title"
+            :placeholder="$t('Enter Your job title')"
             fluid
             aria-describedby="job_title-help"
             :class="{ 'p-invalid': errors.job_title }"
           />
-          <small id="job_title-help" class="text-red-500">{{
-            errors.job_title
-          }}</small>
+          <small
+            id="job_title-help"
+            class="text-red-500"
+            v-if="errors.job_title"
+            >{{ $t(errors.job_title) }}</small
+          >
         </div>
-        <div class="flex flex-col gap-1">
-          <label>Message*</label>
+        <!-- Message  -->
+        <div class="inner-container">
+          <label>{{ $t("Message") }} *</label>
           <Textarea
             v-model="message"
             type="text"
-            placeholder="Enter Subject"
+            :placeholder="$t('Enter Subject')"
             style="resize: none"
             rows="5"
             fluid
             aria-describedby="message-help"
             :class="{ 'p-invalid': errors.message }"
           />
-          <small id="message-help" class="text-red-500">{{
-            errors.message
+          <small id="message-help" class="text-red-500" v-if="errors.message">{{
+            $t(errors.message)
           }}</small>
           <Message
             size="small"
             variant="simple"
             class="text-main-color text-xs font-medium mt-1"
-            >By Submitting, you agree with our Privacy Policy</Message
+            >{{
+              $t("By Submitting, you agree with our Privacy Policy")
+            }}</Message
           >
         </div>
         <UiButtonComponent
           class="auth-button"
-          content="Send"
+          :content="$t('Send')"
           @click="onSubmit"
         />
       </form>

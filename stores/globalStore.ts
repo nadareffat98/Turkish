@@ -1,3 +1,4 @@
+import { useApi } from "~/composables/api";
 export const useGlobalStore = defineStore("globalStore", {
   state: () => {
     return {
@@ -7,7 +8,7 @@ export const useGlobalStore = defineStore("globalStore", {
   actions: {
     // 👉 fetch countries
     async fetchCountries() {
-      const { $api }: any = useNuxtApp();
+      const $api = useApi();
       const config = useRuntimeConfig();
       if (import.meta.client) {
         const data: any = await $api("countries", {
@@ -18,7 +19,7 @@ export const useGlobalStore = defineStore("globalStore", {
     },
     // 👉 fetch cities
     async fetchCities(country_id: number): Promise<any> {
-      const { $api }: any = useNuxtApp();
+      const  $api = useApi();
       const config = useRuntimeConfig();
       if (import.meta.client) {
         const data: any = await $api("cities", {

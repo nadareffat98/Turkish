@@ -6,7 +6,9 @@ const emit = defineEmits(["refreshProduct"]);
 // 👉 Data
 const authStore = useAuthStore();
 const isLoading = useLoadingState();
-const { $api, $toast } = useNuxtApp();
+const $api = useApi();
+const { $toast } = useNuxtApp();
+const { t } = useI18n();
 const selectedColor = ref(
   props.product.colors.length > 0 ? props.product.colors[0] : null
 );
@@ -24,7 +26,7 @@ const addToCart = async () => {
   });
   isLoading.value = false;
   if (res.status == "fail") $toast(res.message, "error");
-  else $toast("the item added to your cart successfully", "success");
+  else $toast(t("the item added successfully"), "success");
 };
 const addOrRemoveWishlist = async () => {
   isLoading.value = true;
@@ -42,10 +44,10 @@ const addOrRemoveWishlist = async () => {
 const copyProductLink = async () => {
   try {
     await navigator.clipboard.writeText(window.location.href);
-    $toast("Copied successfully", "success");
+    $toast(t("Copied successfully"), "success");
   } catch (err) {
     console.error("Failed to copy: ", err);
-    $toast("Failed to copy link", "error");
+    $toast(t("Failed to copy link"), "error");
   }
 };
 const handleSubmit = () => {
@@ -155,7 +157,7 @@ const getButtonIcon = computed(() => {
           % {{ $t("OFF") }}</Tag
         >
       </div>
-      <Divider class="sm:!my-4 !my-2"/>
+      <Divider class="sm:!my-4 !my-2" />
       <!-- product color  -->
       <div class="flex gap-5 mt-1">
         <div

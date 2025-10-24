@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // 👉 Data
-const { $api }: any = useNuxtApp();
+const $api = useApi();
 const clientOpinionData: any = ref(null);
 const data: any = await $api("client_opinions");
 clientOpinionData.value = data.data;
@@ -20,8 +20,8 @@ clientOpinionData.value = data.data;
     <div class="grid grid-cols-12 sm:gap-6 gap-3">
       <div class="sm:col-span-6 col-span-12 grid grid-cols-6 gap-4">
         <h3 class="title">
-          {{$t('What our loving clients are saying')}}
-          <span class="text-second-color">{{$t('about us')}}</span>
+          {{ $t("What our loving clients are saying") }}
+          <span class="text-second-color">{{ $t("about us") }}</span>
         </h3>
         <Card
           class="sm:col-start-2 sm:col-span-5 col-span-12 sm:p-7 p-3 mb-auto z-10"

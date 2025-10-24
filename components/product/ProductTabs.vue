@@ -1,6 +1,7 @@
 <script setup>
 // 👉 Props
-const props = defineProps(["product"]);
+const props = defineProps(["product","reviews"]);
+console.log(props.reviews)
 const tabs = ref([
   { title: "Description", content: props.product.desc, value: "0" },
   {
@@ -35,7 +36,7 @@ const tabs = ref([
         :value="tab.value"
         pt:root:class="sm:text-sm text-xs font-normal text-font-color"
       >
-        <ProductReviews v-if="tab.title === 'Reviews'" :product="product" />
+        <ProductReviews v-if="tab.title === 'Reviews'" :product="product" :reviews="reviews"/>
         <p class="m-0" v-else>{{ tab.content }}</p>
       </TabPanel>
     </TabPanels>

@@ -1,4 +1,5 @@
 <script setup>
+const props = defineProps(["reviews"]);
 const customers = ref([
   {
     name: "Dianne Russell",
@@ -24,7 +25,7 @@ const customers = ref([
 ]);
 </script>
 <template>
-  <div class="cutomer-feedback-container flex flex-col gap-1">
+  <div class="cutomer-feedback-container inner-container">
     <p class="text-base font-semibold text-black mb-4">Customer Feedback</p>
     <div
       v-for="(customer,index) in customers"

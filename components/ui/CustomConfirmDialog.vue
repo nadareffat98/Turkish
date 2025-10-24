@@ -11,22 +11,27 @@
           :icon="message.icon"
           class="text-green-500 text-5xl"
         />
-        <h3 class="text-3xl font-bold text-main-color">{{ message.header }}</h3>
+        <h3 class="text-3xl font-bold text-main-color" v-if="message?.header">
+          {{ $t(message.header) }}
+        </h3>
       </div>
       <p
         class="dialog-message font-medium text-base text-main-color text-center"
+        v-if="message?.message"
       >
-        {{ message.message }}
+        {{ $t(message.message) }}
       </p>
       <div class="dialog-footer flex items-center justify-center gap-3">
         <Button
-          :label="message.acceptLabel"
+          v-if="message?.acceptLabel"
+          :label="$t(message.acceptLabel)"
           @click="acceptCallback"
           outlined
           :class="message.acceptProps.class + ' ' + message.acceptClass"
         />
         <Button
-          :label="message.rejectLabel"
+          v-if="message?.rejectLabel"
+          :label="$t(message.rejectLabel)"
           @click="rejectCallback"
           :class="message.rejectProps.class + ' ' + message.rejectClass"
         />

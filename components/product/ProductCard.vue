@@ -7,7 +7,8 @@ const props = defineProps({
 const emit = defineEmits(["refresh"]);
 // 👉 Data
 const isLoading = useLoadingState();
-const { $api, $toast } = useNuxtApp();
+const $api = useApi();
+const { $toast } = useNuxtApp();
 const authStore = useAuthStore();
 const loaded = ref(false);
 
@@ -56,18 +57,12 @@ const addOrRemoveWishlist = async () => {
       </div>
       <!-- skeleton -->
       <div
-        v-if="!loaded"
+        v-if="!product?.main_image"
         class="absolute inset-0 bg-gray-200 animate-pulse rounded-t-xl"
       ></div>
 
       <!-- real image -->
-      <img
-        :alt="product.title"
-        :src="product.main_image"
-        class="product-img transition-opacity duration-500"
-        :class="{ 'opacity-0': !loaded, 'opacity-100': loaded }"
-        @load="loaded = true"
-      />
+      <img :alt="product.title" :src="product.main_image" class="product-img" />
       <!-- <img :alt="product.title" :src="product.main_image" class="product-img" /> -->
       <!-- <Tag
         pt:root:class="absolute top-0 left-0 py-2 px-4 rounded-tl-xl  rounded-tr-none rounded-bl-none rounded-br-xl bg-second-color text-white"
@@ -83,9 +78,10 @@ const addOrRemoveWishlist = async () => {
       </div>
       <div class="flex flex-col justify-start sm:gap-2 text-black">
         <p class="text-xs font-semibold">
-          EGP <span class="sm:text-lg text-base"> {{ product.price }} </span>
+          {{ $t("EGP") }} 
+          <span class="sm:text-lg text-base"> {{ product.price }} </span>
         </p>
-        <p class="sm:text-sm text-xs font-normal">Free Shipping</p>
+        <!-- <p class="sm:text-sm text-xs font-normal">Free Shipping</p> -->
       </div>
     </template>
   </Card>

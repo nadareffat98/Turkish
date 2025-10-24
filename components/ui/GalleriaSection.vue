@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useApi } from '~/composables/api';
+
 //  👉 Props
 const props = defineProps(["slidersEndpoint", "id", "showMarquee"]);
 // 👉 Data
-const { $api } = useNuxtApp();
-const { data: sliders }: any = await useAsyncData(props.id, () => $api(props.slidersEndpoint));
+const api = useApi();
+const { data: sliders }: any = await useAsyncData(props.id, () => api(props.slidersEndpoint));
 </script>
 <template>
   <div class="galleria-container" v-if="sliders">

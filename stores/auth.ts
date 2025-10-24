@@ -1,5 +1,4 @@
 import type { IUser } from "~/types/auth";
-
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
@@ -13,7 +12,7 @@ export const useAuthStore = defineStore({
       email: string;
       password: string;
     }): Promise<any> {
-      const { $api }: any = useNuxtApp();
+      const $api = useApi();
       const res: any = await $api("login", {
         method: "POST",
         body: { ...credentials },
@@ -24,7 +23,7 @@ export const useAuthStore = defineStore({
     },
     //👉 send code to verify
     async sendCode(credentials: { email: string }): Promise<any> {
-      const { $api }: any = useNuxtApp();
+      const $api = useApi();
       const res: any = await $api("resend-code", {
         method: "POST",
         body: { ...credentials },
@@ -34,7 +33,7 @@ export const useAuthStore = defineStore({
     },
     //👉 verify email
     async verifyEmail(credentials: { code: string; email: string }) {
-      const { $api }: any = useNuxtApp();
+      const $api = useApi();
       const res: any = await $api("account-verify", {
         method: "POST",
         body: { ...credentials },
@@ -45,7 +44,7 @@ export const useAuthStore = defineStore({
     },
     //👉 forget password
     async forgetPassword(credentials: { email: string }): Promise<any> {
-      const { $api }: any = useNuxtApp();
+      const $api = useApi();
       const res: any = await $api("forget-password", {
         method: "POST",
         body: { ...credentials },
@@ -58,7 +57,7 @@ export const useAuthStore = defineStore({
       code: string;
       email: string;
     }): Promise<any> {
-      const { $api }: any = useNuxtApp();
+      const $api = useApi();
       const res: any = await $api("check-code", {
         method: "POST",
         body: { ...credentials },
@@ -68,7 +67,7 @@ export const useAuthStore = defineStore({
     },
     //👉 reset password
     async resetPassword(credentials: any): Promise<any> {
-      const { $api }: any = useNuxtApp();
+      const $api = useApi();
       const res: any = await $api("reset-password", {
         method: "POST",
         body: { ...credentials },
@@ -78,7 +77,7 @@ export const useAuthStore = defineStore({
     },
     //👉 register
     async register(credentials: IUser): Promise<any> {
-      const { $api }: any = useNuxtApp();
+      const $api = useApi();
       const res: any = await $api("register", {
         method: "POST",
         body: { ...credentials },
@@ -99,15 +98,15 @@ export const useAuthStore = defineStore({
     async getProfile(token: String) {
       this.token = token;
       useLocalStorage("token", this.token);
-      const { $api }: any = useNuxtApp();
-      const res: any = await $api("profile", { ignoreResponseError: true });
-      this.user = await res.data;
+      const $api = useApi();
+      const res:any = await $api("profile", { ignoreResponseError: true });
+      this.user = res.data;
       this.isAuth = true;
       navigateTo("/account");
     },
     //👉 update profile
     async updateProfile(credentials: any) {
-      const { $api }: any = useNuxtApp();
+      const $api = useApi();
       const res: any = await $api("profile/update", {
         method: "POST",
         body: {

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const { $api }: any = useNuxtApp();
+import { useApi } from "~/composables/api";
 // 👉 Fetch
 // fetch categories
 const { data: categories }: any = await useAsyncData("categories", async () => {
-  if (!import.meta.client) return null;
+  const $api = useApi();
   return await $api("categories");
 });
 const productItems = computed(() => {
@@ -18,15 +18,16 @@ const productItems = computed(() => {
 });
 // 👉 Data
 const serviceItems = ref([
-  { name: "Make a request", link: "/make-request" },
-  { name: "Track your order", link: "/track-order" },
-  { name: "Become a partner", link: "/partner-us" },
+  { name: "Make a request", link: "/make-request", needLogin: false },
+  { name: "Track your order", link: "/track-order", needLogin: true },
+  { name: "Become a partner", link: "/partner-us", needLogin: false },
 ]);
 const storeItems = ref([
   { name: "About", link: "/" },
   { name: "Contact", link: "/" },
   { name: "FAQs", link: "/" },
 ]);
+const auth = useAuthStore();
 const accordionItems = computed(() => [
   {
     id: 1,
@@ -105,12 +106,9 @@ const accordionItems = computed(() => [
         </div>
         <div class="flex flex-col gap-2">
           <h3>{{ $t("Services") }}</h3>
-          <NuxtLink
-            v-for="service in serviceItems"
-            :key="service.name"
-            :to="service.link"
-            >{{ $t(service.name) }}</NuxtLink
-          >
+          <template v-for="service in serviceItems" :key="service.name">
+            <NuxtLink :to="service.link" v-if="!service.needLogin || (service.needLogin && auth.isAuth)">{{ $t(service.name) }}</NuxtLink>
+          </template>
         </div>
         <div class="flex flex-col gap-2">
           <h3>{{ $t("Store") }}</h3>

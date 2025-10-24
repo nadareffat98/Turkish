@@ -10,7 +10,7 @@ const props = defineProps({
 });
 const emit = defineEmits(["update"]);
 // 👉 Data
-const { $api } = useNuxtApp();
+const $api = useApi(); 
 const config = useRuntimeConfig();
 const file = ref(null);
 const isLoading = ref(false);
@@ -53,7 +53,7 @@ const uploadFile = async (file) => {
 };
 </script>
 <template>
-  <div class="flex flex-col gap-1">
+  <div class="inner-container">
     <label v-if="label">{{ label }}</label>
     <div
       @drop.prevent="handleDrop"
@@ -99,7 +99,7 @@ const uploadFile = async (file) => {
         isLoading ? 'text-main-color' : 'text-green-700',
       ]"
     ></i>
-    <div class="flex-1 flex flex-col gap-1">
+    <div class="flex-1 inner-container">
       <p class="text-main-color text-sm font-medium">{{ file.name }}</p>
       <small class="text-font-color text-sm font-medium">
         {{ (file.size / 1024).toFixed(1) }}kb •

@@ -3,7 +3,8 @@
 const globalStore = useGlobalStore();
 const countries = globalStore.countries;
 const categories = ref([]);
-const { $unavailableProductSchema, $api, $confirmDialog, $toast } =
+const $api = useApi(); 
+const { $unavailableProductSchema, $confirmDialog, $toast } =
   useNuxtApp();
 const router = useRouter();
 const { defineField, handleSubmit, errors } = useForm({
@@ -77,7 +78,7 @@ onMounted(async () => {
         class="flex flex-col gap-4 w-full form-container"
       >
         <div class="flex gap-3">
-          <div class="flex flex-col gap-1">
+          <div class="inner-container">
             <label>First Name*</label>
             <InputText
               v-model="firstName"
@@ -90,7 +91,7 @@ onMounted(async () => {
               {{ errors.first_name_name }}
             </small>
           </div>
-          <div class="flex flex-col gap-1">
+          <div class="inner-container">
             <label>Last Name*</label>
             <InputText
               v-model="lastName"
@@ -104,7 +105,7 @@ onMounted(async () => {
             </small>
           </div>
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label>Email Address*</label>
           <InputText
             v-model="email"
@@ -117,7 +118,7 @@ onMounted(async () => {
             {{ errors.email_name }}
           </small>
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label>Phone number*</label>
           <InputGroup>
             <InputGroupAddon
@@ -151,7 +152,7 @@ onMounted(async () => {
           </InputGroup>
           <small id="phone-help" class="text-red-500">{{ errors.phone }}</small>
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label>Product category*</label>
           <Select
             v-model="selectedCategory"
@@ -166,7 +167,7 @@ onMounted(async () => {
             {{ errors.category_id }}
           </small>
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label>Product name*</label>
           <InputText
             v-model="productName"
@@ -188,7 +189,7 @@ onMounted(async () => {
           model="unavailable_products"
           @update="image = $event"
         />
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label>Message*</label>
           <Textarea
             v-model="message"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(["product"]);
+const props = defineProps(["product","reviews"]);
 const NumberOfRatings = computed(() => {
   return (
     props.product.five_stars +
@@ -91,7 +91,7 @@ console.log(props.product);
         </div>
       </div>
     </div>
-    <ProductCustomerFeedback v-if="product.reviews.length > 0" />
+    <ProductCustomerFeedback v-if="reviews.length > 0" :reviews="reviews"/>
     <p v-else class="text-base font-semibold text-black text-center">
       {{ $t("No reviews yet") }}
     </p>

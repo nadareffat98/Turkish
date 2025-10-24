@@ -8,7 +8,7 @@ const props = defineProps({
   swiperEndpoint: String, // API for swiper images
 });
 // 👉 Data
-const { $api } = useNuxtApp();
+const $api = useApi();
 const {
   data: swiperData,
   pending: swiperPending,

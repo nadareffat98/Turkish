@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { useApi } from "~/composables/api";
 // 👉 Data
-const { $api }: any = useNuxtApp();
+const api = useApi();
 const { data: websiteFeatures }: any = await useAsyncData(
   "website_features",
-  () => $api("website_features")
+  () => api("website_features")
 );
 </script>
 <template>
@@ -23,7 +24,7 @@ const { data: websiteFeatures }: any = await useAsyncData(
           class="flex sm:flex-row flex-col sm:justify-center sm:items-center sm:gap-4"
         >
           <img :src="item.image" class="w-8 h-8" />
-          <div class="flex flex-col gap-1">
+          <div class="inner-container">
             <p class="text-main-color sm:text-base text-sm font-medium">
               {{ item.title }}
             </p>

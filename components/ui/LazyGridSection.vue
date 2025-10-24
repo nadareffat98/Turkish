@@ -7,7 +7,7 @@ const props = defineProps({
   linkTo: String,
 });
 
-const { $api } = useNuxtApp();
+const $api = useApi(); 
 
 // Grid
 const {

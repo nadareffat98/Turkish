@@ -72,23 +72,39 @@ p {
 
 // inputnumber for qty
 .qty-input {
+    &.p-inputnumber-horizontal {
+        .p-inputtext {
+            border-left: 0;
+            border-right: 0;
+        }
+        .p-inputnumber-increment-button {
+            border-start-end-radius: 12px !important;
+            border-end-end-radius: 12px !important;
+        }
+        .p-inputnumber-decrement-button {
+            border-start-start-radius: 12px !important;
+            border-end-start-radius: 12px !important;
+        }
+    }
+    &.p-inputnumber-vertical {
+        width: 50px !important;
+        .p-inputnumber-increment-button {
+            border-start-end-radius: 12px !important;
+            border-start-start-radius: 12px !important;
+        }
+        .p-inputnumber-decrement-button {
+            border-end-end-radius: 12px !important;
+            border-end-start-radius: 12px !important;
+        }
+    }
     .p-inputtext {
-        border-left: 0;
-        border-right: 0;
-        border-width: 3px !important;
+        @apply sm:border-[3px] border-[1px] !important;
         text-align: center;
         border-radius: 0 !important;
     }
-    .p-inputnumber-increment-button {
-        border-start-end-radius: 12px !important;
-        border-end-end-radius: 12px !important;
-    }
-    .p-inputnumber-decrement-button {
-        border-start-start-radius: 12px !important;
-        border-end-start-radius: 12px !important;
-    }
     .p-inputnumber-increment-button,
     .p-inputnumber-decrement-button {
+        @apply sm:border-[3px] border-[1px] !important;
         &.p-disabled {
             opacity: 1;
             span {
@@ -97,7 +113,6 @@ p {
         }
         border-color: $border-color !important;
         color: black;
-        border-width: 3px !important;
         &:hover {
             background-color: transparent !important;
             border-color: inherit;
@@ -123,7 +138,9 @@ p {
 h3 {
     font-family: "El Messiri" !important;
 }
-
+.inner-container {
+    @apply flex flex-col gap-1;
+}
 // confirm dialog
 .p-confirmdialog {
     width: 50%;
@@ -141,8 +158,9 @@ h3 {
 // toast
 .p-toast {
     @apply ltr:left-auto ltr:right-4 rtl:right-auto rtl:left-4;
-    max-width: 90vw;
+    max-width: 90vw !important;
     box-sizing: border-box;
+    width: fit-content !important;
     .p-toast-message-content {
         align-items: center !important;
         gap: 12px;

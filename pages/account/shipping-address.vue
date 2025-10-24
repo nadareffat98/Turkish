@@ -16,7 +16,7 @@ const props = defineProps(["user", "countries"]);
     <template #content>
       <form class="flex flex-col gap-6 w-full" pt:root:class="form-container">
         <div class="flex gap-3">
-          <div class="flex flex-col gap-1 flex-1">
+          <div class="inner-container flex-1">
             <label>First Name*</label>
             <InputText
               v-model="user.firstName"
@@ -25,7 +25,7 @@ const props = defineProps(["user", "countries"]);
               fluid
             />
           </div>
-          <div class="flex flex-col gap-1 flex-1">
+          <div class="inner-container flex-1">
             <label>Last Name*</label>
             <InputText
               v-model="user.lastName"
@@ -35,7 +35,7 @@ const props = defineProps(["user", "countries"]);
             />
           </div>
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label>Phone number*</label>
           <InputGroup>
             <InputGroupAddon
@@ -66,7 +66,7 @@ const props = defineProps(["user", "countries"]);
             />
           </InputGroup>
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label>Address*</label>
           <Textarea
             v-model="user.address"

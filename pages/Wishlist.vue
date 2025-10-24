@@ -2,7 +2,8 @@
 definePageMeta({
   middleware: "auth",
 });
-const { $api, $toast } = useNuxtApp();
+const $api = useApi(); 
+const { $toast } = useNuxtApp();
 const isLoading = useLoadingState();
 const authStore = useAuthStore();
 // 👉 Fetch

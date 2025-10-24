@@ -27,7 +27,7 @@ const links = [
 const logout = () => {
   $confirmDialog({
     header: "Logout",
-    message: " Are you sure you want to log out?",
+    message: "Are you sure you want to log out?",
     acceptLabel: "Logout",
     rejectLabel: "Cancel",
     accept: () => {
@@ -52,7 +52,7 @@ const logout = () => {
       class="no-underline flex lg:justify-start items-center justify-center lg:p-5 p-2 w-full cursor-pointer text-base font-medium text-main-color"
       @click="logout"
     >
-      Logout
+      {{ $t("Logout") }}
     </NuxtLink>
   </div>
 </template>

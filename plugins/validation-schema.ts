@@ -28,27 +28,27 @@ export default defineNuxtPlugin(() => {
   });
   // schema for partner us
   const partnerUsSchema = Yup.object({
-    brand_name: Yup.string().required("Please enter your brand name."),
-    city_id: Yup.string().required("Please enter your city."),
-    address: Yup.string().required("Please enter your address."),
-    business_email: Yup.string().required("Please enter your business email."),
-    file: Yup.string().required("Please upload your product list."),
-    first_name: Yup.string().required("Please enter your first name."),
-    last_name: Yup.string().required("Please enter your last name."),
-    phone: Yup.string().required("Please enter your phone."),
-    job_title: Yup.string().required("Please enter your job title."),
-    message: Yup.string().required("Please enter your message."),
+    brand_name: Yup.string().required("brand name is required"),
+    city_id: Yup.string().required("city is required"),
+    address: Yup.string().required("address is required"),
+    business_email: Yup.string().required("business email is required"),
+    file: Yup.string().required("product list is required"),
+    first_name: Yup.string().required("first name is required"),
+    last_name: Yup.string().required("last name is required"),
+    phone: Yup.string().required("phone is required"),
+    job_title: Yup.string().required("job title is required"),
+    message: Yup.string().required("message is required"),
   });
   // schema for unavailable product
   const unavailableProductSchema = Yup.object({
-    first_name: Yup.string().required("Please enter your first name."),
-    last_name: Yup.string().required("Please enter your last name."),
+    first_name: Yup.string().required("first name is required"),
+    last_name: Yup.string().required("last name is required"),
     email: Yup.string().required("email is required"),
-    phone: Yup.string().required("Please enter your phone."),
+    phone: Yup.string().required("phone is required"),
     category_id: Yup.string().required("Please enter your category."),
     product_name: Yup.string().required("Please enter your product name."),
     image: Yup.string().required("Please upload your product image."),
-    message: Yup.string().required("Please enter your message."),
+    message: Yup.string().required("message is required"),
   });
   // Make the schema available globally
   return {

@@ -2,9 +2,7 @@
 // 👉 Data
 const auth = useAuthStore();
 const { $confirmDialog }: any = useNuxtApp();
-const selectedLang = ref(
-  useCookie("lang").value || "en"
-);
+const selectedLang = ref(useCookie("lang").value || "en");
 const languages: any = ref([
   { name: "English", code: "en" },
   { name: "العربية", code: "ar" },
@@ -36,14 +34,18 @@ const accountItems = ref([
 ]);
 // 👉 Methods
 const toggle = (event: any) => {
-  if (auth.isAuth) {
+  if (!auth.isAuth) return navigateTo("/auth/sign-in");
+
+  if (menu.value) {
     menu.value.toggle(event);
-  } else navigateTo("/auth/sign-in");
+  } else {
+    console.warn("Menu component not yet ready");
+  }
 };
 const logout = () => {
   $confirmDialog({
     header: "Logout",
-    message: " Are you sure you want to log out?",
+    message: "Are you sure you want to log out?",
     acceptLabel: "Logout",
     rejectLabel: "Cancel",
     accept: () => {
@@ -93,7 +95,7 @@ watch(selectedLang, (newLangName) => {
       </template>
       <template #item="{ item }">
         <NuxtLink :to="item.link" class="text-sm font-medium">{{
-          typeof item.label === "string" ? $t(item.label) : ''
+          typeof item.label === "string" ? $t(item.label) : ""
         }}</NuxtLink>
       </template>
       <template #end>
@@ -148,10 +150,12 @@ watch(selectedLang, (newLangName) => {
               custom
             >
               <a v-bind="props.action" :href="href" @click="navigate">
-                {{ typeof item.label === "string" ? $t(item.label) : '' }}
+                {{ typeof item.label === "string" ? $t(item.label) : "" }}
               </a>
             </NuxtLink>
-            <a v-else v-bind="props.action">{{ typeof item.label === "string" ? $t(item.label) : '' }}</a>
+            <a v-else v-bind="props.action">{{
+              typeof item.label === "string" ? $t(item.label) : ""
+            }}</a>
           </template>
         </Menu>
       </template>

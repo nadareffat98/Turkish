@@ -13,7 +13,7 @@ const newPassword = ref("");
     </template>
     <template #content>
       <form class="flex flex-col gap-6 w-full" pt:root:class="form-container">
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label>Old password*</label>
           <Password
             type="text"
@@ -25,7 +25,7 @@ const newPassword = ref("");
             pt:root:class="password-container"
           />
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label>New password*</label>
           <Password
             type="text"
@@ -37,7 +37,7 @@ const newPassword = ref("");
             pt:root:class="password-container"
           />
         </div>
-        <div class="flex flex-col gap-1">
+        <div class="inner-container">
           <label>Confirm new password*</label>
           <Password
             type="text"
