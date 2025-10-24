@@ -2,12 +2,12 @@
 definePageMeta({
   middleware: "auth",
 });
-const $api = useApi(); 
+const $api = useApi();
 const { $toast } = useNuxtApp();
 const isLoading = useLoadingState();
 const authStore = useAuthStore();
 // 👉 Fetch
-const { data: wishlist, refresh } = await useAsyncData("wishlist", () =>
+const { data: wishlist , execute } = await useAsyncData("wishlist", () =>
   $api("favorites")
 );
 // 👉 Methods
@@ -19,7 +19,8 @@ const removeFromWishlist = async (id) => {
   console.log(res);
   if (res.status == "fail") $toast(res.message, "error");
   else {
-    refresh();
+    console.log("sbsb");
+    execute();
   }
   setTimeout(() => {
     isLoading.value = false;
@@ -34,28 +35,36 @@ const removeFromWishlist = async (id) => {
     >
       <Card
         class="cart-products-container"
-        pt:root:class="shadow-none border-2 border-border-color  rounded-xl"
+        pt:root:class="shadow-none border-2 border-border-color rounded-xl"
         pt:body:class="p-0 gap-0"
       >
         <template #title>
-          <h3 class="text-black text-3xl font-bold px-6 py-5">Wishlist</h3>
+          <h3
+            class="text-black sm:text-3xl text-xl font-bold sm:px-6 px-3 sm:py-5 py-2"
+          >
+            {{ $t("Wishlist") }}
+          </h3>
         </template>
         <template #content>
-          <div class="data-view-header flex items-center gap-6 px-6 py-2">
-            <p style="width: 50%">Products</p>
-            <p style="width: 20%">Price</p>
-            <p style="width: 20%">Stock Status</p>
-            <p style="width: 10%">Actions</p>
+          <!-- Header  -->
+          <div
+            class="data-view-header flex items-center lg:gap-6 sm:gap-3 gap-1 sm:px-6 px-3 py-2"
+          >
+            <p style="width: 50%">{{ $t("Products") }}</p>
+            <p style="width: 20%">{{ $t("Price") }}</p>
+            <p style="width: 20%">{{ $t("Status") }}</p>
+            <p style="width: 10%"></p>
           </div>
           <DataView
             :value="wishlist.data"
             pt:root:class="overflow-y-scroll max-h-96"
           >
             <template #list="slotProps">
-              <div class="flex flex-col p-6">
+              <div class="flex flex-col sm:p-6 p-3">
                 <div v-for="(item, index) in slotProps.items" :key="index">
-                  <div
-                    class="flex items-center gap-6 py-4"
+                  <nuxt-link
+                    :to="`/products/${item.id}`"
+                    class="flex items-center sm:gap-6 gap-3 py-4"
                     :class="{
                       'pt-0': index === 0,
                       'pb-0': index === slotProps.items.length - 1,
@@ -68,59 +77,67 @@ const removeFromWishlist = async (id) => {
                       <img
                         :src="item.main_image"
                         :alt="item.title"
-                        style="width: 72px; height: 72px"
+                        class="sm:size-16 size-10 object-cover rounded-lg"
                       />
-                      <span class="text-black text-sm font-normal">{{
+                      <span class="text-black sm:text-sm text-xs font-normal">{{
                         item.title
                       }}</span>
                     </div>
                     <div class="flex items-center gap-2" style="width: 20%">
                       <span
-                        class="line-through text-sm text-font-color font-normal"
+                        class="line-through sm:text-sm text-xs text-font-color font-normal"
                         v-if="item.price != item.price_after_discount"
-                        >{{ item.price }} EGP
+                        >{{ item.price }} {{ $t("EGP") }}
                       </span>
-                      <p class="text-main-color text-sm font-medium">
-                        {{ item.price_after_discount }} EGP
+                      <p class="text-main-color sm:text-sm text-xs font-medium">
+                        {{ item.price_after_discount }} {{ $t("EGP") }}
                       </p>
                     </div>
-                    <div style="width: 20%">
+                    <div style="width: 20%" class="flex">
                       <Button
-                        label="in Stock"
-                        severity="success"
+                        :label="
+                          item.quantity > 0
+                            ? $t('In stock')
+                            : $t('Out of stock')
+                        "
+                        :severity="item.quantity > 0 ? 'success' : 'danger'"
                         variant="text"
+                        class="sm:text-base text-sm"
                       />
                     </div>
                     <div class="flex items-center" style="width: 10%">
                       <i
                         class="pi pi-times-circle text-font-color cursor-pointer"
-                        @click="removeFromWishlist(item.id)"
+                        @click.prevent="removeFromWishlist(item.id)"
                       ></i>
                     </div>
-                  </div>
+                  </nuxt-link>
                 </div>
               </div>
             </template>
           </DataView>
         </template>
       </Card>
-      <NuxtLink to="/products" class="text-second-color text-lg font-semibold"
-        >Continue Shopping</NuxtLink
+      <NuxtLink
+        to="/products"
+        class="text-second-color sm:text-lg text-base font-semibold"
+        >{{ $t("Continue Shopping") }}</NuxtLink
       >
     </div>
     <div
-      class="empty-wishlist flex flex-col items-center justify-center text-center mx-auto"
-      style="width: 430px"
+      class="empty-wishlist flex flex-col items-center justify-center text-center mx-auto sm:w-w-[430px] w-w-full"
       v-else
     >
-      <img src="/public/imgs/heart_broken.png" class="w-24 h-24 mb-6" />
-      <h3 class="text-3xl font-bold mb-2">Nothing found in Wishlist!</h3>
-      <span class="text-main-color text-sm font-medium mb-8"
-        >Once you have added items to your Wishlist, the page should display the
-        contents of your cart, including the products, quantities, and
-        cost.</span
-      >
-      <UiButtonComponent content="Go Shopping" as="router-link" to="/" />
+      <img src="/public/imgs/heart_broken.png" class="sm:size-24 size-16 sm:mb-6 mb-3" />
+      <h3 class="sm:text-3xl text-xl font-bold mb-2">
+        {{ $t("Nothing found in Wishlist!") }}
+      </h3>
+      <span class="text-main-color text-sm font-medium mb-8">{{
+        $t(
+          "Once you have added items to your Favorites page, it should display your saved products along with their details such as name, price, and image"
+        )
+      }}</span>
+      <UiButtonComponent :content="$t('Go shopping')" as="router-link" to="/" />
     </div>
   </div>
 </template>

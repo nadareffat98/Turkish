@@ -86,6 +86,19 @@ export const useAuthStore = defineStore({
       if (res.status == "success") navigateTo("/auth/sign-in");
       return res;
     },
+    //👉 init
+    async init() {
+      const savedToken = await localStorage.getItem("token");
+
+      if (savedToken && !this.token) {
+        this.token = savedToken;
+      }
+
+      if (this.isAuth && !this.token) {
+        this.isAuth = false;
+        this.user = null;
+      }
+    },
     // logout
     async logout() {
       this.token = null;
@@ -99,7 +112,7 @@ export const useAuthStore = defineStore({
       this.token = token;
       useLocalStorage("token", this.token);
       const $api = useApi();
-      const res:any = await $api("profile", { ignoreResponseError: true });
+      const res: any = await $api("profile", { ignoreResponseError: true });
       this.user = res.data;
       this.isAuth = true;
       navigateTo("/account");

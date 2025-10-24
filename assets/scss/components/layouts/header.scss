@@ -60,6 +60,7 @@
             order: 2;
         }
         .p-menubar-button {
+            color: $main-color !important;
             order: 1;
             &:hover {
                 background: none !important;

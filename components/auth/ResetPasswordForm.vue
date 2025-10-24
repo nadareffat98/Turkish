@@ -53,8 +53,12 @@ const onSubmit = handleSubmit(async (values: any) => {
             aria-describedby="password-help"
             :invalid="errors.password ? true : false"
           />
-          <small id="password-help" class="text-red-500">
-            {{ errors.password ? $t(errors.password) : "" }}
+          <small
+            id="password-help"
+            class="text-red-500"
+            v-if="errors?.password"
+          >
+            {{ $t(errors.password) }}
           </small>
         </div>
         <div class="input-container">
@@ -70,12 +74,12 @@ const onSubmit = handleSubmit(async (values: any) => {
             aria-describedby="password_confirmation-help"
             :invalid="errors.password_confirmation ? true : false"
           />
-          <small id="password_confirmation-help" class="text-red-500">
-            {{
-              errors.password_confirmation
-                ? $t(errors.password_confirmation)
-                : ""
-            }}
+          <small
+            id="password_confirmation-help"
+            class="text-red-500"
+            v-if="errors.password_confirmation"
+          >
+            {{ $t(errors.password_confirmation) }}
           </small>
         </div>
         <UiButtonComponent

@@ -24,6 +24,7 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div class="product-table">
+    <!-- Header  -->
     <div
       class="data-view-header flex items-center lg:gap-6 sm:gap-3 gap-1 sm:px-6 px-3 py-2"
     >
@@ -72,7 +73,7 @@ onBeforeUnmount(() => {
               }"
             >
               <div
-                class="flex sm:flex-nowrap flex-wrap justify-start items-center sm:gap-3 gap-1"
+                class="flex justify-start items-center sm:gap-3 gap-1"
                 style="width: 35%"
               >
                 <i
@@ -80,14 +81,18 @@ onBeforeUnmount(() => {
                   v-if="routeType === 'cart'"
                   @click="$emit('removeFromCard', item.product.id)"
                 ></i>
-                <img
-                  :src="item.product.main_image"
-                  :alt="item.product.title"
-                  class="lg:size-16 size-10 object-cover rounded-lg"
-                />
-                <span class="text-black sm:text-sm text-xs font-normal">{{
-                  item.product.title
-                }}</span>
+                <div
+                  class="flex sm:flex-row flex-col justify-start items-center sm:gap-3 gap-1"
+                >
+                  <img
+                    :src="item.product.main_image"
+                    :alt="item.product.title"
+                    class="lg:size-16 size-10 object-cover rounded-lg"
+                  />
+                  <span class="text-black sm:text-sm text-xs font-normal">{{
+                    item.product.title
+                  }}</span>
+                </div>
               </div>
               <div class="flex items-center gap-2" style="width: 15%">
                 <!-- <span class="line-through text-sm text-font-color font-normal"
@@ -113,9 +118,7 @@ onBeforeUnmount(() => {
                   <template #incrementbuttonicon>
                     <span
                       class="pi pi-plus"
-                      @click="
-                        $emit('addToCard', item)
-                      "
+                      @click="$emit('addToCard', item)"
                     />
                   </template>
                   <template #decrementbuttonicon>
@@ -127,9 +130,7 @@ onBeforeUnmount(() => {
                 </InputNumber>
               </div>
               <div style="width: 15%">
-                <p
-                  class="text-black sm:text-sm text-xs font-medium whitespace-nowrap"
-                >
+                <p class="text-black sm:text-sm text-xs font-medium">
                   {{ item.product.price * item.quantity }} {{ $t("EGP") }}
                 </p>
               </div>

@@ -45,8 +45,8 @@ const onSubmit = handleSubmit(async (values: any) => {
             aria-describedby="email-help"
             :class="{ 'p-invalid': errors.email }"
           />
-          <small id="email-help" class="text-red-500">
-            {{ $t(errors.email || "") }}
+          <small id="email-help" class="text-red-500" v-if="errors?.email">
+            {{ $t(errors.email) }}
           </small>
         </div>
         <div class="input-container">
@@ -62,8 +62,8 @@ const onSubmit = handleSubmit(async (values: any) => {
             aria-describedby="password-help"
             :invalid="errors.password ? true : false"
           />
-          <small id="password-help" class="text-red-500">
-            {{ $t(errors.password || "") }}
+          <small id="password-help" class="text-red-500" v-if="errors.password">
+            {{ $t(errors.password) }}
           </small>
         </div>
         <div class="flex justify-end">
