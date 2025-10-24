@@ -4,19 +4,19 @@
   <ConfirmDialog>
     <template #container="{ message, acceptCallback, rejectCallback }">
       <div
-        class="dialog-header flex flex-col items-center justify-center gap-8"
+        class="dialog-header flex flex-col items-center justify-center sm:gap-8 gap-4"
       >
         <font-awesome
           v-if="message.icon"
           :icon="message.icon"
-          class="text-green-500 text-5xl"
+          class="text-green-500 lg:text-5xl text-4xl"
         />
-        <h3 class="text-3xl font-bold text-main-color" v-if="message?.header">
+        <h3 class="sm:text-3xl text-2xl font-bold text-main-color text-center" v-if="message?.header">
           {{ $t(message.header) }}
         </h3>
       </div>
       <p
-        class="dialog-message font-medium text-base text-main-color text-center"
+        class="dialog-message font-medium sm:text-base text-sm text-main-color text-center"
         v-if="message?.message"
       >
         {{ $t(message.message) }}

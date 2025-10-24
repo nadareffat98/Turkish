@@ -45,9 +45,9 @@ export default defineNuxtPlugin(() => {
     last_name: Yup.string().required("last name is required"),
     email: Yup.string().required("email is required"),
     phone: Yup.string().required("phone is required"),
-    category_id: Yup.string().required("Please enter your category."),
-    product_name: Yup.string().required("Please enter your product name."),
-    image: Yup.string().required("Please upload your product image."),
+    category_id: Yup.string().required("category is required"),
+    product_name: Yup.string().required("product name is required"),
+    image: Yup.string().required("product image is required"),
     message: Yup.string().required("message is required"),
   });
   // Make the schema available globally

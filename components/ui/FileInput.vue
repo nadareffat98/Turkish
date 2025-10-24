@@ -10,11 +10,12 @@ const props = defineProps({
 });
 const emit = defineEmits(["update"]);
 // 👉 Data
-const $api = useApi(); 
+const $api = useApi();
 const config = useRuntimeConfig();
 const file = ref(null);
 const isLoading = ref(false);
 const isDragging = ref(false);
+const errorUploading = ref(null);
 
 //👉 Methods
 const handleDrop = async (event) => {
@@ -32,6 +33,7 @@ const handleFileChange = (event) => {
 const resetFile = () => {
   file.value = null;
   isLoading.value = false;
+  errorUploading.value = null;
   emit("update", null);
 };
 const uploadFile = async (file) => {
@@ -39,16 +41,18 @@ const uploadFile = async (file) => {
   formData.append("file", file);
   formData.append("attachment_type", props.type);
   formData.append("model", props.model);
-  const res = await $api("attachments", {
-    baseURL: `${config.public.baseURL}/api/general/`,
-    method: "POST",
-    body: formData,
-    ignoreResponseError: true,
-  });
-  if (res.status == "fail") $toast(res.message, "error");
-  else {
-    isLoading.value = false;
+  try {
+    const res = await $api("attachments", {
+      baseURL: `${config.public.baseURL}/api/general/`,
+      method: "POST",
+      body: formData,
+    });
     emit("update", res.data);
+  } catch (e) {
+    errorUploading.value = e.data?.message ?? 'Something went wrong';
+    $toast(e.data.message, "error");
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
@@ -67,8 +71,8 @@ const uploadFile = async (file) => {
       @click="$refs.fileInput.click()"
     >
       <i class="pi pi-file-arrow-up text-main-color text-2xl"></i>
-      <div class="flex gap-2">
-        <p class="font-medium text-base underline text-second-color">
+      <div class="flex flex-wrap justify-center items-center gap-2">
+        <p class="font-medium sm:text-base text-sm underline text-second-color">
           Click to upload
         </p>
         <span class="text-main-color"> or drag and drop</span>
@@ -87,24 +91,34 @@ const uploadFile = async (file) => {
     />
   </div>
   <div
-    v-if="isLoading || file"
+    v-if="isLoading || file || errorUploading"
     :class="[
-      'w-full p-4 flex justify-between items-center gap-4 rounded',
-      isLoading ? 'bg-gray-50' : 'bg-[#2E7D311A]',
+      'w-full p-4 flex justify-between items-center sm:gap-4 gap-2 rounded',
+      isLoading ? 'bg-gray-50' : errorUploading ? 'bg-[#FFF2F2]' : 'bg-[#2E7D311A]',
     ]"
   >
     <i
       :class="[
         'pi pi-file-arrow-up text-2xl',
-        isLoading ? 'text-main-color' : 'text-green-700',
+        isLoading
+          ? 'text-main-color'
+          : errorUploading
+          ? 'text-[#D32F2F]'
+          : 'text-green-700',
       ]"
     ></i>
-    <div class="flex-1 inner-container">
-      <p class="text-main-color text-sm font-medium">{{ file.name }}</p>
-      <small class="text-font-color text-sm font-medium">
+    <div class="sm:flex-1 inner-container">
+      <p
+        class="text-sm font-medium break-words"
+        :class="[errorUploading ? 'text-[#D32F2F]' : 'text-main-color']"
+      >
+        {{ errorUploading ? errorUploading : file.name }}
+      </p>
+      <small class="text-font-color text-sm font-medium" >
         {{ (file.size / 1024).toFixed(1) }}kb •
-        <span v-if="isLoading">Loading...</span>
-        <span v-else>Completed</span>
+        <span v-if="isLoading">{{ $t("Loading...") }}</span>
+        <span v-else-if="errorUploading"> {{ $t("Failed") }}</span>
+        <span v-else>{{ $t("Completed") }}</span>
       </small>
     </div>
     <div class="flex items-center gap-4">
@@ -121,7 +135,7 @@ const uploadFile = async (file) => {
       <font-awesome
         icon="fa-solid fa-circle-check"
         class="text-green-700 text-2xl"
-        v-else
+        v-else-if="!errorUploading"
       ></font-awesome>
     </div>
   </div>

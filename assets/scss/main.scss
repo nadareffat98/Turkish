@@ -143,15 +143,21 @@ h3 {
 }
 // confirm dialog
 .p-confirmdialog {
-    width: 50%;
-    padding: 32px 64px;
-    gap: 24px;
+    width: 90%;
+    padding: 24px;
+    gap: 10px;
     .reject-button {
         flex: 1;
     }
-
+    @media (min-width: 580px) {
+        width: 60%;
+        padding: 24px 44px;
+        gap: 12px;
+    }
     @media (min-width: 1024px) {
         width: 35%;
+        padding: 32px 64px;
+        gap: 24px;
     }
 }
 

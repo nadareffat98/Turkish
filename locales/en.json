@@ -141,5 +141,18 @@
   "please include SKUs , images , Descriptions , Prices if possible": "please include SKUs , images , Descriptions , Prices if possible",
   "Message Received": "Message Received",
   "Your message has been received so expect a prompt response from our team soon": "Your message has been received so expect a prompt response from our team soon",
-  "Back to home": "Back to home"
+  "Back to home": "Back to home",
+  "Seeking an unavailable product?": "Seeking an unavailable product?",
+  "Let us know, and we'll work on getting it for you soon!": "Let us know, and we'll work on getting it for you soon!",
+  "Product category": "Product category",
+  "Select category": "Select category",
+  "Product name": "Product name",
+  "Product image": "Product image",
+  "Enter Your product name": "Enter Your product name",
+  "category is required": "category is required",
+  "product name is required": "product name is required",
+  "product image is required": "product image is required",
+  "Loading...": "Loading...",
+  "Completed": "Completed",
+  "Failed": "Failed"
 }

@@ -141,5 +141,18 @@
   "please include SKUs , images , Descriptions , Prices if possible": "يرجى تضمين رموز المنتج (SKU) والصور والوصف والأسعار إن أمكن",
   "Message Received": "تم استلام الرسالة",
   "Your message has been received so expect a prompt response from our team soon": "تم استلام رسالتك، لذا توقّع ردًا سريعًا من فريقنا قريبًا.",
-  "Back to home": "العودة للصفحة الرئيسية"
+  "Back to home": "العودة للصفحة الرئيسية",
+  "Seeking an unavailable product?": "هل تبحث عن منتج غير متوفر؟",
+  "Let us know, and we'll work on getting it for you soon!": "أخبرنا، وسنعمل على توفيره لك قريبًا!",
+  "Product category":"تصنيف المنتج",
+  "Select category":"اختر القسم",
+  "Product name":"اسم المنتج",
+  "Product image":"صورة المنتج",
+  "Enter Your product name":"ادخل اسم المنتج",
+  "category is required":"القسم مطلوب",
+  "product name is required":"اسم المنتج مطلوب",
+  "product image is required":"صورة المنتج مطلوبة",
+  "Loading...":"جاري التحميل...",
+  "Completed":"تم الانتهاء",
+  "Failed":"فشل"
 }
