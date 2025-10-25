@@ -9,7 +9,7 @@
         <font-awesome
           v-if="message.icon"
           :icon="message.icon"
-          class="text-green-500 lg:text-5xl text-4xl"
+          class="text-green-500 sm:text-5xl text-4xl"
         />
         <h3 class="sm:text-3xl text-2xl font-bold text-main-color text-center" v-if="message?.header">
           {{ $t(message.header) }}

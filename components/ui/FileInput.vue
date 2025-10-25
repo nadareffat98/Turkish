@@ -70,7 +70,7 @@ const uploadFile = async (file) => {
       ]"
       @click="$refs.fileInput.click()"
     >
-      <i class="pi pi-file-arrow-up text-main-color text-2xl"></i>
+      <i class="pi pi-file-arrow-up text-main-color sm:text-2xl text-lg"></i>
       <div class="flex flex-wrap justify-center items-center gap-2">
         <p class="font-medium sm:text-base text-sm underline text-second-color">
           Click to upload

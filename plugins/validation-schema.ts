@@ -50,6 +50,15 @@ export default defineNuxtPlugin(() => {
     image: Yup.string().required("product image is required"),
     message: Yup.string().required("message is required"),
   });
+
+  // schema for contact us
+    const contactUsSchema = Yup.object({
+    first_name: Yup.string().required("first name is required"),
+    last_name: Yup.string().required("last name is required"),
+    email: Yup.string().required("email is required"),
+    phone: Yup.string().required("phone is required"),
+    message: Yup.string().required("message is required"),
+  });
   // Make the schema available globally
   return {
     provide: {
@@ -58,6 +67,7 @@ export default defineNuxtPlugin(() => {
       signUpSchema,
       signInSchema,
       resetPasswordSchema,
+      contactUsSchema
     },
   };
 });

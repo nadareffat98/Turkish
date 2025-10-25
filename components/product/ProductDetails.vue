@@ -136,7 +136,7 @@ const getButtonIcon = computed(() => {
       </div>
       <!-- product price -->
       <div class="price flex gap-4 sm:mt-3 mt-1">
-        <p class="text-2xl font-semibold text-main-color">
+        <p class="sm:text-2xl text-lg font-semibold text-main-color">
           {{ product.price_after_discount }} {{ $t("EGP") }}
         </p>
         <p
