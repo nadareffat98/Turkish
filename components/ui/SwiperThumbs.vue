@@ -54,7 +54,7 @@ const setThumbsSwiper = (swiper) => {
         :key="index"
         style="height: 85px"
       >
-        <img :src="image.image" class="h-full w-full rounded-lg object-cover" />
+        <img :src="image.image" class="sm:size-20 size-16 rounded-lg object-cover" />
       </swiper-slide>
     </swiper>
     <Button

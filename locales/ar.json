@@ -161,5 +161,16 @@
   "Nothing found in Wishlist!": "لا يوجد شيء في المفضلة!",
   "Once you have added items to your Favorites page, it should display your saved products along with their details such as name, price, and image": "بمجرد إضافة عناصر إلى قائمة المفضلة، يجب أن تعرض الصفحة محتويات قائمتك، بما في ذلك المنتجات وتفاصيلها مثل الاسم والسعر والصورة.",
   "In stock": "متوفر",
-  "Out of stock": "غير متوفر"
+  "Out of stock": "غير متوفر",
+  "All": "الكل",
+  "Search for anything...": "ابحث عن شيء...",
+  "Sort by": "ترتيب حسب",
+  "Select...": "اختر...",
+  "There is no products": "لا يوجد منتجات",
+  "Filter": "تصفية",
+  "Filter Products": "تصفية المنتجات",
+  "Top rate": "التقييم الاعلى",
+  "Price: High to Low":"السعر: من الاعلى للاقل",
+  "Price: Low to High":"السعر: من الاقل للاعلى",
+  "Best Seller":"الاكثر مبيعا"
 }

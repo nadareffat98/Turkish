@@ -24,7 +24,7 @@ const serviceItems = ref([
 ]);
 const storeItems = ref([
   { name: "About", link: "/" },
-  { name: "Contact", link: "/" },
+  { name: "Contact", link: "/contact-us" },
   { name: "FAQs", link: "/" },
 ]);
 const auth = useAuthStore();

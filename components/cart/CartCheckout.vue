@@ -85,7 +85,8 @@ const applyCoupon = () => {
       <UiButtonComponent
         :content="$t('Apply')"
         @click="applyCoupon"
-        class="rounded-xl absolute ltr:right-0 rtl:left-0 h-full px-6 !mt-0"
+        class="rounded-xl absolute ltr:right-0 rtl:left-0 h-full px-6"
+        style="margin-top:0 !important"
       />
     </div>
     <UiButtonComponent

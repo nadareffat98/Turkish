@@ -9,6 +9,7 @@ const props = defineProps({
 // 👉 router data
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n();
 // 👉 Data
 const selectedSubCategory = ref(null);
 const selectedCategoryId = ref("");
@@ -17,7 +18,7 @@ const min = props.min;
 const max = props.max;
 const allColors = ref({
   id: null,
-  title: "All Colors",
+  title: t("All"),
   hexadecimal: "FFFFFF",
 });
 const selectedColor = ref(allColors.value);
@@ -88,7 +89,7 @@ onMounted(() => {
 <template>
   <div class="flex flex-col gap-3">
     <div class="category-filter flex flex-col gap-4">
-      <p class="text-black text-lg font-bold">Category</p>
+      <p class="text-black md:text-lg text-base font-bold">{{ $t("Category") }}</p>
       <Accordion :value="selectedCategoryId">
         <AccordionPanel
           v-for="category in categories"
@@ -98,7 +99,7 @@ onMounted(() => {
         >
           <AccordionHeader
             @click="getProductsbyCategory(category.id)"
-            pt:root:class="border-2 border-border-color rounded-xl text-base font-medium text-main-color p-4"
+            pt:root:class="border-2 border-border-color rounded-xl md:text-base text-sm font-medium text-main-color p-4"
             :pt:toggleicon:class="[
               category.sub_categories.length != 0 ? '' : 'hidden',
               'text-main-color',
@@ -125,7 +126,7 @@ onMounted(() => {
     </div>
     <Divider class="my-3" />
     <div class="price-filter flex flex-col gap-4">
-      <p class="text-black text-lg font-bold">Price Range</p>
+      <p class="text-black text-lg font-bold">{{ $t("Price") }}</p>
       <Slider
         v-model="priceRange"
         range
@@ -155,15 +156,15 @@ onMounted(() => {
     </div>
     <Divider class="my-3" />
     <div class="color-filter flex flex-col gap-4">
-      <p class="text-black text-lg font-bold">Color</p>
+      <p class="text-black md:text-lg text-base font-bold">{{ $t("Color") }}</p>
       <div class="flex flex-col gap-3">
         <div class="flex items-center gap-2">
           <RadioButton
             v-model="selectedColor"
             name="dynamic"
             :value="allColors"
-            pt:root:class="rounded-full flex justify-center items-center w-8 h-8 border-transparent"
-            pt:box:class="border-4 border-white w-full h-full"
+            pt:root:class="rounded-full flex justify-center items-center size-8 border-transparent"
+            pt:box:class="border-4 border-white size-full"
             pt:icon:class="invisible"
             :pt:box:style="{ backgroundColor: '#' + allColors.hexadecimal }"
             @change="updateColorQuery"
@@ -179,8 +180,8 @@ onMounted(() => {
             v-model="selectedColor"
             name="dynamic"
             :value="color"
-            pt:root:class="rounded-full flex justify-center items-center w-8 h-8 border-transparent"
-            pt:box:class="border-4 border-white w-full h-full"
+            pt:root:class="rounded-full flex justify-center items-center size-8 border-transparent"
+            pt:box:class="border-4 border-white size-full"
             pt:icon:class="invisible"
             :pt:box:style="{ backgroundColor: '#' + color.hexadecimal }"
             @change="updateColorQuery"

@@ -161,5 +161,16 @@
   "Nothing found in Wishlist!": "Nothing found in Wishlist!",
   "Once you have added items to your Favorites page, it should display your saved products along with their details such as name, price, and image": "Once you have added items to your Favorites page, it should display your saved products along with their details such as name, price, and image",
   "In stock": "In stock",
-  "Out of stock": "Out of stock"
+  "Out of stock": "Out of stock",
+  "All": "All",
+  "Search for anything...": "Search for anything...",
+  "Sort by": "Sort by",
+  "Select...": "Select...",
+  "There is no products": "There is no products",
+  "Filter": "Filter",
+  "Filter Products": "Filter Products",
+  "Top rate": "Top rate",
+  "Price: High to Low": "Price: High to Low",
+  "Price: Low to High": "Price: Low to High",
+  "Best Seller": "Best Seller"
 }

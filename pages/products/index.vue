@@ -3,6 +3,9 @@
 const $api = useApi();
 const config = useRuntimeConfig();
 const route = useRoute();
+const visible = ref(false);
+const { locale } = useI18n();
+const showSkeleton = ref(false);
 // 👉 Fetch
 // fetch filter data
 const { data } = await useAsyncData("filter-data", () =>
@@ -15,31 +18,37 @@ const { data } = await useAsyncData("filter-data", () =>
 );
 
 // fetch products
-const { data: products, refresh } = await useAsyncData("product-list", () =>
-  $api("products", {
-    query: {
-      category_id: route.query.categoryId,
-      sub_category_id: route.query.subCategoryId,
-      from_price: route.query.fromPrice,
-      to_price: route.query.toPrice,
-      sorted: route.query.sort,
-      keyword: route.query.keyword,
-      color_id: route.query.colorId,
-    },
-  })
+const {
+  data: products,
+  refresh,
+  pending,
+} = await useAsyncData(
+  "product-list",
+  () =>
+    $api("products", {
+      query: {
+        category_id: route.query.categoryId,
+        sub_category_id: route.query.subCategoryId,
+        from_price: route.query.fromPrice,
+        to_price: route.query.toPrice,
+        sorted: route.query.sort,
+        keyword: route.query.keyword,
+        color_id: route.query.colorId,
+      },
+    }),
+  { watch: [() => route.query] }
 );
-// 👉 Watch
 watch(
-  () => route.query,
+  () => route.fullPath,
   () => {
-    refresh();
-  },
-  { deep: true }
+    if (visible.value) visible.value = false;
+  }
 );
 </script>
 <template>
-  <div class="products-container flex gap-12" v-if="products && data">
-    <div class="left-side w-1/4">
+  <div class="products-container flex lg:gap-12 gap-6" v-if="products && data">
+    <!-- ✅ Desktop Filter -->
+    <div class="left-side md:flex hidden w-1/4">
       <ProductFilter
         :categories="data.categories.data"
         :colors="data.colors.data"
@@ -47,15 +56,36 @@ watch(
         :min="data.colors.min"
       />
     </div>
-    <div class="right-side w-3/4">
-      <ProductList :products="products?.data" />
+    <!-- ✅ Products List -->
+    <div class="right-side md:w-3/4 w-full">
+      <ProductList
+        :products="products?.data"
+        :showSkeleton="pending"
+        @open-filter="visible = true"
+      />
     </div>
+    <!-- ✅ Drawer for mobile -->
+    <Drawer
+      v-model:visible="visible"
+      pt:header:class="p-3 mb-4 border-b border-border-color"
+      pt:title:class="text-base font-bold text-black"
+      class="product-drawer"
+      :position="locale === 'ar' ? 'right' : 'left'"
+      :header="$t('Filter Products')"
+    >
+      <ProductFilter
+        :categories="data.categories.data"
+        :colors="data.colors.data"
+        :max="data.colors.max"
+        :min="data.colors.min"
+      />
+    </Drawer>
   </div>
-  <div v-else class="products-container flex gap-12">
-    <div class="left-side w-1/4">
+  <div v-else class="products-container flex lg:gap-12 gap-6">
+    <div class="left-side md:flex hidden w-1/4">
       <SkeletonFilter />
     </div>
-    <div class="right-side w-3/4">
+    <div class="right-side md:w-3/4 w-full">
       <SkeletonGrid />
     </div>
   </div>
