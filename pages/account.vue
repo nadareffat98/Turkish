@@ -5,6 +5,7 @@ definePageMeta({
 // 👉 Data
 const auth = useAuthStore();
 const countries = useGlobalStore().countries;
+await auth.getProfile();
 const user = ref({
   firstName: auth.user.full_name.split(" ")[0],
   lastName: auth.user.full_name.split(" ")[1],
@@ -16,11 +17,11 @@ const user = ref({
 </script>
 
 <template>
-  <div class="grid lg:grid-cols-12 grid-cols-1 gap-16">
+  <div class="grid lg:grid-cols-12 grid-cols-1 lg:gap-16 sm:gap-10 gap-5">
     <div class="xl:col-span-3 lg:col-span-4 col-span-12">
       <AccountMenu />
     </div>
-    <div class="xl:col-span-9 lg:col-span-8 col-span-12">
+    <div class="xl:col-span-9 lg:col-span-8 col-span-12" v-if="user">
       <NuxtPage :user="user" :countries="countries" />
     </div>
   </div>

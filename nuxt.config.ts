@@ -62,7 +62,7 @@ export default defineNuxtConfig({
     "@vesp/nuxt-fontawesome",
     "nuxt-swiper",
     "@vee-validate/nuxt",
-    ["@pinia/nuxt", { autoImports: ["defineStore", "acceptHMRUpdate"] }],
+    ["@pinia/nuxt", { autoImports: ["defineStore", "acceptHMRUpdate","storeToRefs"] }],
     "pinia-plugin-persistedstate/nuxt",
     [
       "@nuxtjs/google-fonts",
@@ -118,9 +118,6 @@ export default defineNuxtConfig({
       ],
       regular: ["circle-check"],
     },
-  },
-  pinia: {
-    storesDirs: ["./stores/**"],
   },
   veeValidate: {
     autoImports: true,

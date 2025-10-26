@@ -23,41 +23,32 @@ const updateProfile = async () => {
 <template>
   <Card class="account-card-container xl:w-2/3">
     <template #title>
-      <h3>My profile</h3>
+      <h3>{{ $t("My profile") }}</h3>
     </template>
     <template #content>
-      <form class="flex flex-col gap-6 w-full" pt:root:class="form-container">
+      <form class="flex flex-col lg:gap-6 gap-4 w-full" pt:root:class="form-container">
         <div class="flex gap-3">
           <div class="inner-container flex-1">
-            <label>First Name*</label>
+            <label>{{ $t("First Name") }} *</label>
             <InputText
               v-model="user.firstName"
               type="text"
-              placeholder="Enter Your first name"
+              :placeholder="$t('Enter Your first name')"
               fluid
             />
           </div>
           <div class="inner-container flex-1">
-            <label>Last Name*</label>
+            <label>{{ $t("Last Name") }} *</label>
             <InputText
               v-model="user.lastName"
               type="text"
-              placeholder="Enter Your last name"
+              :placeholder="$t('Enter Your last name')"
               fluid
             />
           </div>
         </div>
         <div class="inner-container">
-          <label>Email*</label>
-          <InputText
-            v-model="user.email"
-            type="text"
-            placeholder="Enter Your email"
-            fluid
-          />
-        </div>
-        <div class="inner-container">
-          <label>Phone number*</label>
+          <label>{{ $t("Phone number") }} *</label>
           <InputGroup>
             <InputGroupAddon
               class="p-0 border-r-0 rounded-xl border-border-color"
@@ -67,13 +58,13 @@ const updateProfile = async () => {
                 :options="countries"
                 optionLabel="phone_code"
                 optionValue="phone_code"
-                class="border-none pr-0"
-                pt:label:class="pr-0"
+                class="border-none ltr:pr-0 rtl:pl-0"
+                pt:label:class="ltr:pr-0 rtl:pl-0"
                 pt:dropdownicon:class="text-black"
               />
               <Divider
                 layout="vertical"
-                class="before:border-black ml-0"
+                class="before:border-black ltr:ml-0 rtl:mr-0"
                 style="min-height: 50%"
               />
             </InputGroupAddon>
@@ -81,14 +72,14 @@ const updateProfile = async () => {
               v-model="user.phone"
               type="text"
               v-keyfilter.num
-              placeholder="Enter Your phone"
-              class="border-l-0 rounded-xl"
+              :placeholder="$t('Enter Your phone')"
+              class="ltr:border-l-0 rtl:border-r-0 rounded-xl"
               fluid
             />
           </InputGroup>
         </div>
         <UiButtonComponent
-          content="Save changes"
+          :content="$t('Save changes')"
           class="text-base rounded-xl w-full"
           @click="updateProfile"
         />

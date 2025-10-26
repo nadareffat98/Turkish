@@ -4,16 +4,17 @@ const authStore = useAuthStore();
 const { $confirmDialog }: any = useNuxtApp();
 const links = [
   { label: "My profile", route: "/account" },
+  { label: "Change email", route: "/account/email-address" },
   { label: "Shipping address", route: "/account/shipping-address" },
-  //   {
-  //     label: "Saved cards",
-  //     route: "/account/saved-cards",
-  //   },
   { label: "Order history", route: "/account/order-history" },
   {
     label: "Product review",
     route: "/account/product-review",
   },
+    {
+      label: "Saved Cards",
+      route: "/account/cards",
+    },
   //   {
   //     label: "Returnes",
   //     route: "/account/returns",
@@ -44,14 +45,11 @@ const logout = () => {
       v-for="link in links"
       :key="link.label"
       :to="link.route"
-      class="no-underline flex lg:justify-start items-center justify-center lg:p-5 p-2 lg:border-b border-border-color w-full text-base font-medium text-main-color"
+      class="account-link"
     >
-      {{ link.label }}
+      {{ $t(link.label) }}
     </NuxtLink>
-    <NuxtLink
-      class="no-underline flex lg:justify-start items-center justify-center lg:p-5 p-2 w-full cursor-pointer text-base font-medium text-main-color"
-      @click="logout"
-    >
+    <NuxtLink class="account-link text-second-color" @click="logout">
       {{ $t("Logout") }}
     </NuxtLink>
   </div>

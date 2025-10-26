@@ -80,7 +80,7 @@ h3 {
   @apply font-bold lg:text-6xl sm:text-3xl text-xl text-main-color sm:mt-11 mt-5 lg:ml-11 sm:col-span-6 col-span-12;
 }
 .right-side {
-  @apply sm:col-span-6 col-span-12 grid grid-cols-6 lg:gap-16 sm:gap-10 gap-4 sm:pt-24;
+  @apply sm:col-span-6 col-span-12 grid grid-cols-6 lg:gap-16 sm:gap-10 gap-5 sm:pt-24;
 }
 .icon {
   @apply text-second-color text-base;

@@ -52,12 +52,27 @@ export default defineNuxtPlugin(() => {
   });
 
   // schema for contact us
-    const contactUsSchema = Yup.object({
+  const contactUsSchema = Yup.object({
     first_name: Yup.string().required("first name is required"),
     last_name: Yup.string().required("last name is required"),
     email: Yup.string().required("email is required"),
     phone: Yup.string().required("phone is required"),
     message: Yup.string().required("message is required"),
+  });
+  // schema for card
+  const cardSchema = Yup.object({
+    card_number: Yup.string()
+      .transform((val) => val.replace(/-/g, ""))
+      .required("Card number is required")
+      .matches(/^\d{16}$/, "Card number must be 16 digits"),
+    holder_name: Yup.string().required("Card holder name is required"),
+    cvc: Yup.string()
+      .required("CVC is required")
+      .matches(/^\d{3,4}$/, "CVC must be 3 or 4 digits"),
+    month: Yup.string().required("Month is required"),
+    year: Yup.string()
+      .required("Year is required")
+      .matches(/^\d{4}$/, "Year must be 4 digits"),
   });
   // Make the schema available globally
   return {
@@ -67,7 +82,8 @@ export default defineNuxtPlugin(() => {
       signUpSchema,
       signInSchema,
       resetPasswordSchema,
-      contactUsSchema
+      contactUsSchema,
+      cardSchema,
     },
   };
 });

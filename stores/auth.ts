@@ -18,7 +18,10 @@ export const useAuthStore = defineStore({
         body: { ...credentials },
         ignoreResponseError: true,
       });
-      if (res.status == "success") await this.getProfile(res.data.token);
+      if (res.status == "success") {
+        this.token = res.data.token;
+        await this.getProfile();
+      }
       return res;
     },
     //👉 send code to verify
@@ -39,7 +42,10 @@ export const useAuthStore = defineStore({
         body: { ...credentials },
         ignoreResponseError: true,
       });
-      if (res.status == "success") this.getProfile(res.data.token);
+      if (res.status == "success") {
+        this.token = res.data.token;
+        await this.getProfile();
+      }
       return res;
     },
     //👉 forget password
@@ -88,15 +94,10 @@ export const useAuthStore = defineStore({
     },
     //👉 init
     async init() {
-      const savedToken = await localStorage.getItem("token");
-
-      if (savedToken && !this.token) {
-        this.token = savedToken;
-      }
-
-      if (this.isAuth && !this.token) {
-        this.isAuth = false;
-        this.user = null;
+      const token = useLocalStorage<string | null>("token", null);
+      if (token.value) {
+        this.token = token.value;
+        this.isAuth = true;
       }
     },
     // logout
@@ -108,14 +109,13 @@ export const useAuthStore = defineStore({
       navigateTo("/auth/sign-in");
     },
     //👉 get profile
-    async getProfile(token: String) {
-      this.token = token;
+    async getProfile() {
       useLocalStorage("token", this.token);
       const $api = useApi();
       const res: any = await $api("profile", { ignoreResponseError: true });
       this.user = res.data;
       this.isAuth = true;
-      navigateTo("/account");
+      // navigateTo("/account");
     },
     //👉 update profile
     async updateProfile(credentials: any) {

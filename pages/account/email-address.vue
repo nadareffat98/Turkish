@@ -1,30 +1,34 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+// 👉 Props
+const props = defineProps(["user"]);
 // 👉 Data
 const emailFormActive = ref(true);
-const email = ref("");
+const email = ref(props.user.email);
 const code = ref();
 const errors: any = ref({ code: {}, email: {} });
+const $api = useApi();
 const auth = useAuthStore();
 const isLoading = useLoadingState();
 const { $toast }: any = useNuxtApp();
 // 👉 Methods
-
 const onEmailFormSubmit = async () => {
   if (!email.value) {
     errors.value = { email: { message: "email is required" } };
     return;
   } else {
     isLoading.value = true;
-    const res = await auth.sendCode({
-      email: email.value,
-    });
-    if (res.status == "fail") {
-      $toast(res.message, "error");
-    } else {
+    try {
+      await $api("profile/edit-email", {
+        method: "POST",
+        body: { email: email.value },
+      });
       emailFormActive.value = false;
       await focusOtp();
+    } catch (e: any) {
+      $toast(e.data.message, "error");
+    } finally {
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 };
 const onCodeFormSubmit = async () => {
@@ -34,15 +38,18 @@ const onCodeFormSubmit = async () => {
   } else {
     errors.value = { code: {} };
     isLoading.value = true;
-    const res = await auth.verifyEmail({
-      code: code.value,
-      email: email.value,
-    });
-    if (res.status == "fail") {
-      $toast(res.message, "error");
+    try {
+      await $api("profile/verify-email", {
+        method: "POST",
+        body: { email: email.value, code: code.value },
+      });
+      await auth.getProfile();
+      emailFormActive.value = true;
+    } catch (e: any) {
+      $toast(e.data.message, "error");
+    } finally {
+      isLoading.value = false;
     }
-    else navigateTo("/account");
-    isLoading.value = false;
   }
 };
 const focusOtp = async () => {
@@ -54,12 +61,9 @@ const focusOtp = async () => {
 };
 </script>
 <template>
-  <AuthCardForm>
-    <template #header>
-      <h3 class="title-auth">{{ $t("Verify email") }}</h3>
-      <p class="subtitle-auth text-center">
-        {{ $t("Enter your email to send you a message to verify your email") }}
-      </p>
+  <Card class="account-card-container xl:w-2/3">
+    <template #title>
+      <h3>{{ $t("Change email") }}</h3>
     </template>
     <template #content>
       <form
@@ -113,25 +117,6 @@ const focusOtp = async () => {
         />
       </form>
     </template>
-    <template #footer>
-      <p class="footer-auth" v-if="emailFormActive">
-        {{ $t("Already have an account?") }}
-        <Button
-          :label="$t('Sign in')"
-          variant="text"
-          class="text-second-color sm:text-sm text-xs font-medium hover:bg-inherit p-0"
-          @click="$emit('changeForm', 'signIn', null)"
-        />
-      </p>
-      <p class="text-main-color sm:text-sm text-xs font-medium mt-2" v-else>
-        {{ $t("You didn’t receive any code yet ?") }}
-        <Button
-          :label="$t('Resend it')"
-          variant="text"
-          class="text-second-color sm:text-sm text-xs font-medium hover:bg-inherit p-0"
-          @click.prevent="onEmailFormSubmit"
-        />
-      </p>
-    </template>
-  </AuthCardForm>
+  </Card>
 </template>
+<style src="@/assets/scss/components/auth/auth.scss" scoped></style>

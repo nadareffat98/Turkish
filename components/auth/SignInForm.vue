@@ -21,6 +21,7 @@ const onSubmit = handleSubmit(async (values: any) => {
       emit("changeForm", "verifyEmail", null);
     else $toast(res.message, "error");
   }
+  else navigateTo("/account");
   isLoading.value = false;
 });
 </script>
