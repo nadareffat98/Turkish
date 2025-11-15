@@ -21,7 +21,7 @@ export function useApi() {
     },
     async onResponseError({ response }) {
       if (response.status === 401) {
-        await navigateTo("/login");
+        await navigateTo("/auth/sign-in");
       }
     },
   });

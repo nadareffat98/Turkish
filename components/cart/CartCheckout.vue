@@ -1,6 +1,6 @@
 <script setup>
 // 👉 props
-const props = defineProps(["totalPrice"]);
+const props = defineProps(["totalPrice","isCart"]);
 
 // 👉 emits
 const emit = defineEmits(["applyCoupon", "checkout"]);
@@ -80,7 +80,7 @@ const applyCoupon = () => {
         </div>
       </template>
     </Card>
-    <div class="relative mt-4">
+    <div class="relative mt-4" v-if="isCart">
       <InputText :placeholder="$t('Coupon')" fluid v-model="coupon" />
       <UiButtonComponent
         :content="$t('Apply')"
@@ -90,7 +90,7 @@ const applyCoupon = () => {
       />
     </div>
     <UiButtonComponent
-      :label="$t('Proceed to Checkout')"
+      :label="isCart ? $t('Proceed to Checkout') : $t('Place order')"
       :icon="locale === 'ar' ? 'pi pi-arrow-left' : 'pi pi-arrow-right'"
       class="text-base sm:py-3 py-2 w-full rounded-xl mt-4 gap-3 ltr:flex-row-reverse"
       @click="$emit('checkout')"

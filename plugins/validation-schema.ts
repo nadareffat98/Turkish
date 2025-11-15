@@ -59,20 +59,58 @@ export default defineNuxtPlugin(() => {
     phone: Yup.string().required("phone is required"),
     message: Yup.string().required("message is required"),
   });
-  // schema for card
-  const cardSchema = Yup.object({
-    card_number: Yup.string()
-      .transform((val) => val.replace(/-/g, ""))
-      .required("Card number is required")
-      .matches(/^\d{16}$/, "Card number must be 16 digits"),
-    holder_name: Yup.string().required("Card holder name is required"),
-    cvc: Yup.string()
-      .required("CVC is required")
-      .matches(/^\d{3,4}$/, "CVC must be 3 or 4 digits"),
-    month: Yup.string().required("Month is required"),
-    year: Yup.string()
-      .required("Year is required")
-      .matches(/^\d{4}$/, "Year must be 4 digits"),
+  // schema for shipping info
+  const shippingSchema = Yup.object({
+    first_name: Yup.string().required("first name is required"),
+    last_name: Yup.string().required("last name is required"),
+    email: Yup.string().required("email is required"),
+    phone: Yup.string().required("phone is required"),
+    second_phone: Yup.string().required("additional phone is required"),
+    country_id: Yup.string().required("country is required"),
+    governrate_id: Yup.string().required("governrate is required"),
+    city_id: Yup.string().required("city is required"),
+    postal_code: Yup.string().required("postal code is required"),
+    address: Yup.string().required("address is required"),
+    payment_option: Yup.string().required("Payment method is required"),
+    card_number: Yup.string().when("payment_option", {
+      is: (val) => val === "card",
+      then: (schema) =>
+        schema
+          .transform((val) => val.replace(/-/g, ""))
+          .required("Card number is required")
+          .matches(/^\d{16}$/, "Card number must be 16 digits"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+
+    holder_name: Yup.string().when("payment_option", {
+      is: (val) => val === "card",
+      then: (schema) => schema.required("Card holder name is required"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+
+    cvc: Yup.string().when("payment_option", {
+      is: (val) => val === "card",
+      then: (schema) =>
+        schema
+          .required("CVC is required")
+          .matches(/^\d{3,4}$/, "CVC must be 3 or 4 digits"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+
+    month: Yup.number().when("payment_option", {
+      is: (val) => val === "card",
+      then: (schema) => schema.required("Month is required"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+
+    year: Yup.number().when("payment_option", {
+      is: (val) => val === "card",
+      then: (schema) =>
+        schema
+          .required("Year is required")
+          .min(new Date().getFullYear(), "Year cannot be in the past"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
   });
   // Make the schema available globally
   return {
@@ -83,7 +121,7 @@ export default defineNuxtPlugin(() => {
       signInSchema,
       resetPasswordSchema,
       contactUsSchema,
-      cardSchema,
+      shippingSchema,
     },
   };
 });

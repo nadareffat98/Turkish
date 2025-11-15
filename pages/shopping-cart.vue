@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import GiftModal from "~/components/cart/GiftModal.vue";
+import PlaceOrder from "~/components/cart/PlaceOrder.vue";
+
 // 👉 Data
 const $api = useApi();
 const { $toast }: any = useNuxtApp();
@@ -7,13 +10,21 @@ const isLoading = useLoadingState();
 const cartProducts: any = ref(null);
 const total: any = ref(null);
 const coupon = ref(null);
-const {t} = useI18n();
+const { t } = useI18n();
+const giftData: any = ref({
+  is_gift: 0,
+  from: "",
+  to: "",
+});
+const isCart = ref(true);
+const placeOrderRef: any = ref(null);
 
 // 👉 Methods
 const getData = async () => {
   isLoading.value = true;
   try {
     const resProducts: any = await $api("cart");
+    console.log(resProducts);
     cartProducts.value = resProducts.data;
     const params: any = {};
     if (coupon.value) {
@@ -76,15 +87,18 @@ const checkout = async () => {
     const res = await $api("proceed-to-checkout", {
       method: "POST",
       body: {
-        is_gift: 0,
+        ...giftData.value,
       },
     });
-    console.log(res);
+    isCart.value = false;
   } catch (error: any) {
     $toast(error?.data?.message, "error");
   } finally {
     isLoading.value = false;
   }
+};
+const placeOrder = () => {
+  placeOrderRef.value?.onSubmit();
 };
 onMounted(() => {
   getData();
@@ -93,23 +107,44 @@ onMounted(() => {
 <template>
   <div
     class="cart-container flex lg:flex-row flex-col xl:gap-16 sm:gap-10 gap-5 xl:mb-20 lg:mb-10 mb-6"
-    v-if="cartProducts && total"
   >
-    <div class="left-side lg:w-[70%] w-full">
-      <CartProducts
-        :products="cartProducts"
-        @removeFromCard="removeItem"
-        @addToCard="addItem"
-        @minusItem="minusItem"
-      />
-    </div>
-    <div class="right-side lg:w-[30%] w-full">
-      <CartCheckout
-        :totalPrice="total"
-        @applyCoupon="apply"
-        @checkout="checkout"
-      />
-    </div>
+    <template v-if="cartProducts && total && isCart">
+      <div class="left-side lg:w-[70%] w-full">
+        <CartProducts
+          :products="cartProducts"
+          @removeFromCard="removeItem"
+          @addToCard="addItem"
+          @minusItem="minusItem"
+        />
+        <GiftModal
+          @update:isGift="(v) => (giftData.is_gift = v)"
+          @update:from="(v) => (giftData.from = v)"
+          @update:to="(v) => (giftData.to = v)"
+          @update:message="(v) => (giftData.message = v)"
+          class="mt-6"
+        />
+      </div>
+      <div class="right-side lg:w-[30%] w-full">
+        <CartCheckout
+          :totalPrice="total"
+          @applyCoupon="apply"
+          @checkout="checkout"
+          :is-cart="true"
+        />
+      </div>
+    </template>
+    <template v-if="total && !isCart">
+      <div class="left-side lg:w-[70%] w-full">
+        <PlaceOrder ref="placeOrderRef" :gift-data="giftData" />
+      </div>
+      <div class="right-side lg:w-[30%] w-full">
+        <CartCheckout
+          :totalPrice="total"
+          @checkout="placeOrder"
+          :is-cart="false"
+        />
+      </div>
+    </template>
   </div>
 </template>
 <style lang="scss" src="@/assets/scss/cart.scss" scoped></style>

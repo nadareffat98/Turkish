@@ -134,7 +134,7 @@
   "job title is required": "job title is required",
   "message is required": "message is required",
   "Message": "Message",
-  "Enter Subject": "Enter Subject",
+  "Enter Subject": "Enter subject",
   "Select City": "Select City",
   "By Submitting, you agree with our Privacy Policy": "By Submitting, you agree with our Privacy Policy",
   "Send": "Send",
@@ -232,5 +232,11 @@
   "Month": "Month",
   "Select month": "Select month",
   "Year": "Year",
-  "Enter year": "Enter year"
+  "Enter year": "Enter year",
+  "Enter your name": "Enter your name",
+  "Enter name": "Enter name",
+  "Is it a gift ?": "Is it a gift ?",
+  "Make your gift even more special with a special box or bag. You can also include a personalized gift message": "Make your gift even more special with a special box or bag. You can also include a personalized gift message",
+  "Place order": "Place order",
+  "Shipping info":"Shipping Information"
 }

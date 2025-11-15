@@ -1,9 +1,23 @@
 <script setup lang="ts">
-//👉 Props
-const props = defineProps(["card", "mode"]);
-// 👉 Emits
-const emit = defineEmits(["submit"]);
-// 👉 Data
+// 👉 Props from parent form
+const props = defineProps({
+  card_number: String,
+  holder_name: String,
+  cvc: String,
+  month: String,
+  year: String,
+  errors: Object, // this is the errors object from parent
+});
+
+// 👉 Emits to update parent v-model
+const emit = defineEmits([
+  "update:card_number",
+  "update:holder_name",
+  "update:cvc",
+  "update:month",
+  "update:year",
+]);
+
 const months = [
   { name: "January", number: "01" },
   { name: "February", number: "02" },
@@ -18,30 +32,18 @@ const months = [
   { name: "November", number: "11" },
   { name: "December", number: "12" },
 ];
-const { $cardSchema } = useNuxtApp();
-const { defineField, handleSubmit, errors } = useForm({
-  validationSchema: $cardSchema,
-});
 
-// ✅ define fields
-const [card_number] = defineField("card_number");
-const [holder_name] = defineField("holder_name");
-const [cvc] = defineField("cvc");
-const [month] = defineField("month");
-const [year] = defineField("year");
-
-//👉 Methods
-const onSubmit = handleSubmit((values) => {
-  const cleanedCardNumber = values.card_number.replace(/-/g, "");
-  const payload = { ...values, card_number: cleanedCardNumber };
-  emit("submit", payload);
-});
+// Formatting card number
 const handleCardNumberInput = (e: any) => {
   let val = e.target.value;
-  val = val.replace(/\D/g, "");
-  val = val.replace(/(\d{4})(?=\d)/g, "$1-");
-  card_number.value = val;
+  val = val.replace(/\D/g, ""); // keep only digits
+  // emit only digits without dash
+  emit("update:card_number", val);
 };
+const formattedCardNumber = computed(() => {
+  const val = props.card_number || "";
+  return val.replace(/(\d{4})(?=\d)/g, "$1-");
+});
 
 const preventInvalidInput = (e: KeyboardEvent) => {
   const key = e.key;
@@ -54,121 +56,101 @@ const preventInvalidInput = (e: KeyboardEvent) => {
     e.preventDefault();
     return;
   }
-  const numericOnly = card_number.value.replace(/\D/g, "");
+  const numericOnly = (props.card_number || "").replace(/\D/g, "");
   if (numericOnly.length >= 16 && /[\d]/.test(key)) {
     e.preventDefault();
   }
 };
-
-// 👉 Computed
-const getButtonName = computed(() => {
-  if (props.mode == "add") return "Add card";
-  else return "Edit card";
-});
-
-// 👉 Mounted
-onMounted(() => {
-  if (props.mode === "edit" && props.card) {
-    card_number.value = props.card.card_number;
-    holder_name.value = props.card.holder_name;
-    cvc.value = props.card.cvc;
-    month.value = props.card.month;
-    year.value = props.card.year;
-  }
-});
 </script>
+
 <template>
-  <form
-    @submit.prevent="onSubmit"
-    class="flex flex-col sm:gap-6 gap-4 w-full form-container"
-  >
-    <!-- Card Number  -->
-    <div class="inner-container">
-      <label>{{ $t("Card Number") }} *</label>
-      <InputText
-        :value="card_number"
-        @keypress="preventInvalidInput"
-        @input="handleCardNumberInput"
-        :placeholder="$t('Enter Your card number')"
-        aria-describedby="card-number-help"
-        :class="{ 'p-invalid': errors.card_number }"
-        fluid
-      />
-      <small
-        id="card-number-help"
-        class="text-red-500"
-        v-if="errors.card_number"
-      >
-        {{ $t(errors.card_number) }}
-      </small>
-    </div>
-    <!-- Card holder name  -->
-    <div class="inner-container">
-      <label>{{ $t("Card Holder Name") }} *</label>
-      <InputText
-        v-model="holder_name"
-        :placeholder="$t('Enter Your card holder name')"
-        aria-describedby="holder-name-help"
-        :class="{ 'p-invalid': errors.holder_name }"
-        fluid
-      />
-      <small
-        id="holder-name-help"
-        class="text-red-500"
-        v-if="errors.holder_name"
-      >
-        {{ $t(errors.holder_name) }}
-      </small>
-    </div>
-    <!-- Cvv  -->
-    <div class="inner-container">
-      <label>CVC *</label>
-      <InputText
-        v-model="cvc"
-        :placeholder="$t('Enter Your cvc')"
-        aria-describedby="cvc-help"
-        :class="{ 'p-invalid': errors.cvc }"
-        fluid
-      />
-      <small id="cvc-help" class="text-red-500" v-if="errors.cvc">
-        {{ $t(errors.cvc) }}
-      </small>
-    </div>
-    <!-- Month && Year  -->
-    <div class="flex gap-3">
-      <div class="inner-container w-full">
-        <label>{{ $t("Month") }} *</label>
-        <Select
-          v-model="month"
-          :options="months"
-          optionLabel="name"
-          option-value="number"
-          :placeholder="$t('Select month')"
-          aria-describedby="month-help"
-          :class="{ 'p-invalid': errors.month, 'w-full': true }"
-        />
-        <small id="month-help" class="text-red-500" v-if="errors?.month">
-          {{ $t(errors.month) }}
-        </small>
-      </div>
-      <div class="inner-container w-full">
-        <label>{{ $t("Year") }} *</label>
-        <InputText
-          v-model="year"
-          :placeholder="$t('Enter year')"
-          aria-describedby="year-help"
-          :class="{ 'p-invalid': errors.year }"
-          fluid
-        />
-        <small id="year-help" class="text-red-500" v-if="errors.year">
-          {{ $t(errors.year) }}
-        </small>
-      </div>
-    </div>
-    <UiButtonComponent
-      type="submit"
-      class="auth-button"
-      :content="$t(getButtonName)"
+  <!-- <div class="card-form"> -->
+  <!-- Card Number -->
+  <div class="input-container">
+    <label>{{ $t("Card Number") }} *</label>
+    <InputText
+      :value="formattedCardNumber"
+      @input="handleCardNumberInput"
+      @keypress="preventInvalidInput"
+      :placeholder="$t('Enter Your card number')"
+      :class="{ 'p-invalid': errors?.card_number }"
+      fluid
     />
-  </form>
+    <small v-if="errors?.card_number" class="text-red-500">{{
+      $t(errors.card_number)
+    }}</small>
+  </div>
+
+  <!-- Card Holder Name -->
+  <div class="input-container">
+    <label>{{ $t("Card Holder Name") }} *</label>
+    <InputText
+      :value="holder_name"
+      @input="emit('update:holder_name', $event?.target?.value)"
+      :placeholder="$t('Enter Your card holder name')"
+      :class="{ 'p-invalid': errors?.holder_name }"
+      fluid
+    />
+    <small v-if="errors?.holder_name" class="text-red-500">{{
+      $t(errors.holder_name)
+    }}</small>
+  </div>
+
+  <!-- CVC -->
+  <div class="input-container">
+    <label>CVC *</label>
+    <InputText
+      :value="cvc"
+      @input="emit('update:cvc', $event.target?.value)"
+      :placeholder="$t('Enter Your cvc')"
+      :class="{ 'p-invalid': errors?.cvc }"
+      fluid
+    />
+    <small v-if="errors?.cvc" class="text-red-500">{{ $t(errors.cvc) }}</small>
+  </div>
+
+  <!-- Month & Year -->
+  <div class="flex gap-3">
+    <div class="input-container w-full">
+      <label>{{ $t("Month") }} *</label>
+      <Select
+        :value="month"
+        @change="emit('update:month', parseInt($event.value))"
+        :options="months"
+        optionLabel="name"
+        option-value="number"
+        :placeholder="$t('Select month')"
+        :class="{ 'p-invalid': errors?.month, 'w-full': true }"
+      />
+      <small v-if="errors?.month" class="text-red-500">{{
+        $t(errors.month)
+      }}</small>
+    </div>
+
+    <div class="input-container w-full">
+      <label>{{ $t("Year") }} *</label>
+      <InputText
+        :value="year"
+        @input="emit('update:year', parseInt($event.target?.value) || null)"
+        :placeholder="$t('Enter year')"
+        :class="{ 'p-invalid': errors?.year }"
+        fluid
+      />
+      <small v-if="errors?.year" class="text-red-500">{{
+        $t(errors.year)
+      }}</small>
+    </div>
+  </div>
+  <!-- </div> -->
 </template>
+
+<!-- <style scoped lang="scss">
+.inner-container {
+  margin-bottom: 1rem;
+}
+.card-form {
+  .p-invalid {
+    border-color: red !important;
+  }
+}
+</style> -->

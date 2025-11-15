@@ -232,6 +232,11 @@
   "Month": "الشهر",
   "Select month": " اختر شهر",
   "Year": "السنة",
-  "Enter year": "ادخل السنة"
-
+  "Enter year": "ادخل السنة",
+  "Enter your name": "ادخل اسمك",
+  "Enter name": "ادخل الاسم",
+  "Is it a gift ?": "هل هذه بطاقة هدية؟",
+  "Make your gift even more special with a special box or bag. You can also include a personalized gift message": "اجعل هديتك أكثر تميّزًا مع صندوق أو حقيبة خاصة. يمكنك أيضًا إضافة رسالة إهداء مخصّصة.",
+  "Place order":"احجز الطلب",
+  "Shipping info":"معلومات الشحن"
 }

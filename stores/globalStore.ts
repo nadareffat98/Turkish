@@ -17,14 +17,29 @@ export const useGlobalStore = defineStore("globalStore", {
         this.countries = data.data;
       }
     },
+    // 👉 fetch Governrates
+    async fetchGovernrates(country_id: number): Promise<any> {
+      const $api = useApi();
+      const config = useRuntimeConfig();
+      if (import.meta.client) {
+        const data: any = await $api("governrates", {
+          baseURL: `${config.public.baseURL}/api/general/`,
+          query: { country_id: country_id },
+        });
+        return data.data;
+      }
+    },
     // 👉 fetch cities
-    async fetchCities(country_id: number): Promise<any> {
-      const  $api = useApi();
+    async fetchCities(
+      country_id: number,
+      governrate_id?: number | null
+    ): Promise<any> {
+      const $api = useApi();
       const config = useRuntimeConfig();
       if (import.meta.client) {
         const data: any = await $api("cities", {
           baseURL: `${config.public.baseURL}/api/general/`,
-          query: { country_id: country_id },
+          query: { country_id: country_id, governrate_id: governrate_id },
         });
         return data.data;
       }

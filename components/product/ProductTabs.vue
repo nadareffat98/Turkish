@@ -1,7 +1,6 @@
 <script setup>
 // 👉 Props
 const props = defineProps(["product","reviews"]);
-console.log(props.reviews)
 const tabs = ref([
   { title: "Description", content: props.product.desc, value: "0" },
   {
