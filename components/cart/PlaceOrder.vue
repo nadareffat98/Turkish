@@ -355,7 +355,7 @@ onMounted(async () => {
           <Select
             v-model="governrate_id"
             :options="governrates"
-            optionLabel="id"
+            optionLabel="title"
             option-value="id"
             :placeholder="$t('Select Governrate')"
             :loading="isGovernateLoading"
@@ -399,7 +399,7 @@ onMounted(async () => {
         <Select
           v-model="city_id"
           :options="cities"
-          optionLabel="id"
+          optionLabel="name"
           option-value="id"
           :placeholder="$t('Select City')"
           :loading="isGovernateLoading || isCityLoading"
